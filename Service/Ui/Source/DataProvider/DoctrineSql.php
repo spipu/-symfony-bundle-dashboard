@@ -66,7 +66,7 @@ class DoctrineSql extends AbstractDataProvider
     {
         list($dateFrom, $dateTo) = $this->getPreviousPeriodDate();
 
-        $query = $this->prepareQuery($dateFrom, $dateTo);
+        $query = $this->prepareQuery($dateFrom->format('Y-m-d H:i:s'), $dateTo->format('Y-m-d H:i:s'));
         $rows = $this->executeQuery($query);
 
         if (!isset($rows[0]['v'])) {
@@ -110,13 +110,9 @@ class DoctrineSql extends AbstractDataProvider
 
         $dateField = $this->getSqlFieldName($dateField);
 
-        $query = $this->prepareQuery(
-            null,
-            null,
-            "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)"
-        );
-        $query .= " ORDER BY " . $dateField . ' ASC';
-        $query .= " GROUP BY t";
+        $dateExpression = "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)";
+        $query = $this->prepareQuery(null, null, $dateExpression);
+        $query .= " GROUP BY $dateExpression ORDER BY $dateField ASC ";
 
         $rows = $this->executeQuery($query);
         foreach ($rows as $row) {

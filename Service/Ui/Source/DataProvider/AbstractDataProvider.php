@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
+use DateTimeInterface;
 use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
 use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 
@@ -80,7 +81,7 @@ abstract class AbstractDataProvider implements DataProviderInterface
     }
 
     /**
-     * @return array
+     * @return DateTimeInterface[]
      */
     protected function getPreviousPeriodDate(): array
     {
