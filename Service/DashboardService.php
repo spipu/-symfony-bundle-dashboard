@@ -70,7 +70,21 @@ class DashboardService
     ): DashboardConfig {
         $dashboard = $this->createDashboard($user, self::DEFAULT_NAME);
 
-        $dashboard->setContent($definition ? $definition->getDefaultConfig() : []);
+        $content = $definition ? $definition->getDefaultConfig() : [];
+        foreach ($content['rows'] as &$row) {
+            foreach ($row['cols'] as &$col) {
+                foreach ($col['widgets'] as &$widget) {
+                    if (!array_key_exists('id', $widget)) {
+                        $widget['id'] = uniqid();
+                    }
+                    if (!array_key_exists('filters', $widget)) {
+                        $widget['filters'] = [];
+                    }
+                }
+            }
+        }
+
+        $dashboard->setContent($content);
 
         $this->entityManager->flush();
 
