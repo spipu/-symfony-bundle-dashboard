@@ -24,7 +24,6 @@ use Spipu\DashboardBundle\Service\Ui\DashboardShowFactory;
 use Spipu\DashboardBundle\Service\Ui\Definition\DashboardDefinitionInterface;
 use Spipu\DashboardBundle\Service\Ui\WidgetFactory;
 use Spipu\UiBundle\Exception\UiException;
-use Spipu\UserBundle\Entity\UserInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -36,7 +35,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Throwable;
 
 /**
- * @method UserInterface getUser()
  * @SuppressWarnings(PMD.CouplingBetweenObjects)
  * @SuppressWarnings(PMD.ExcessiveParameterList)
  */
