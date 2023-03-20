@@ -1,0 +1,26 @@
+{
+    "name": "spipu/dashboard-bundle",
+    "type": "symfony-bundle",
+    "description": "Spipu Dashboard Bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "laurent Minguet",
+            "email": "contact@minguet.fr"
+        },
+        {
+            "name": "Charles Sannier",
+            "email": "charlessannier@gmail.com"
+        }
+    ],
+    "require": {
+        "ext-pdo": "*",
+        "symfony/framework-bundle": "^5.4",
+        "spipu/ui-bundle": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spipu\\DashboardBundle\\": "./"
+        }
+    }
+}
