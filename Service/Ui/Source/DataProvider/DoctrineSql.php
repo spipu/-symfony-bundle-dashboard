@@ -46,7 +46,7 @@ class DoctrineSql extends AbstractDataProvider
         $query = $this->prepareQuery();
         $rows = $this->executeQuery($query);
 
-        if (!isset($rows[0]['v'])) {
+        if (!array_key_exists(0, $rows) || !array_key_exists('v', $rows[0])) {
             throw new NoResultException();
         }
         if (count($rows) !== 1) {
@@ -69,7 +69,7 @@ class DoctrineSql extends AbstractDataProvider
         $query = $this->prepareQuery($dateFrom->format('Y-m-d H:i:s'), $dateTo->format('Y-m-d H:i:s'));
         $rows = $this->executeQuery($query);
 
-        if (!isset($rows[0]['v'])) {
+        if (!array_key_exists(0, $rows) || !array_key_exists('v', $rows[0])) {
             throw new NoResultException();
         }
         if (count($rows) !== 1) {
