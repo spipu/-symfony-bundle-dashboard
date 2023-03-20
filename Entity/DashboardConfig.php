@@ -15,7 +15,6 @@ namespace Spipu\DashboardBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Spipu\UiBundle\Entity\TimestampableTrait;
-use Spipu\DashboardBundle\Repository\DashboardConfigRepository;
 
 /**
  * @ORM\Table(
@@ -24,7 +23,7 @@ use Spipu\DashboardBundle\Repository\DashboardConfigRepository;
  *          @ORM\UniqueConstraint(name="UNIQ_DASHBOARD_CONFIG", columns={"user_identifier", "name"}),
  *     }
  * )
- * @ORM\Entity(repositoryClass=DashboardConfigRepository::class)
+ * @ORM\Entity(repositoryClass=\Spipu\DashboardBundle\Repository\DashboardConfigRepository::class)
  * @ORM\HasLifecycleCallbacks()
  */
 class DashboardConfig implements DashboardInterface
