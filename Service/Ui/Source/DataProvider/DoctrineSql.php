@@ -1,0 +1,238 @@
+<?php
+
+/**
+ * This file is part of a Spipu Bundle
+ *
+ * (c) Laurent Minguet
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
+
+use Doctrine\DBAL\Exception as DbalException;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Spipu\DashboardBundle\Exception\SourceException;
+
+class DoctrineSql extends AbstractDataProvider
+{
+    /**
+     * @var EntityManagerInterface
+     */
+    private EntityManagerInterface $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager
+    ) {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * @return float
+     * @throws DbalException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     */
+    public function getValue(): float
+    {
+        $query = $this->prepareQuery();
+        $rows = $this->executeQuery($query);
+
+        if (!isset($rows[0]['v'])) {
+            throw new NoResultException();
+        }
+        if (count($rows) !== 1) {
+            throw new NonUniqueResultException();
+        }
+
+        return (float) $rows[0]['v'];
+    }
+
+    /**
+     * @return float
+     * @throws NoResultException
+     * @throws NonUniqueResultException
+     * @throws DbalException
+     */
+    public function getPreviousValue(): float
+    {
+        list($dateFrom, $dateTo) = $this->getPreviousPeriodDate();
+
+        $query = $this->prepareQuery($dateFrom, $dateTo);
+        $rows = $this->executeQuery($query);
+
+        if (!isset($rows[0]['v'])) {
+            throw new NoResultException();
+        }
+        if (count($rows) !== 1) {
+            throw new NonUniqueResultException();
+        }
+
+        return (float) $rows[0]['v'];
+    }
+
+    /**
+     * @return array
+     * @throws SourceException
+     * @throws DbalException
+     */
+    public function getValues(): array
+    {
+        $dateField = $this->definition->getDateField();
+        if ($dateField === null) {
+            throw new SourceException('The dateField can\'t be null');
+        }
+        $period = $this->request->getPeriod();
+        $dateFrom = $period->getDateFrom();
+        $dateTo = $period->getDateTo();
+
+        $timeFrom = $dateFrom->getTimestamp();
+        $timeTo = $dateTo->getTimestamp();
+        $timeStep = $period->getStep();
+
+        $values = [];
+        for ($time = $timeFrom; $time < $timeTo; $time += $timeStep) {
+            $values[] = [
+                't' => $time,
+                'd' => date('Y-m-d H:i:s', $time),
+                'v' => null,
+            ];
+        }
+        $formattedDate = $dateFrom->format('Y-m-d H:i:s');
+
+        $dateField = $this->getSqlFieldName($dateField);
+
+        $query = $this->prepareQuery(
+            null,
+            null,
+            "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)"
+        );
+        $query .= " ORDER BY " . $dateField . ' ASC';
+        $query .= " GROUP BY t";
+
+        $rows = $this->executeQuery($query);
+        foreach ($rows as $row) {
+            if (isset($values[$row['t']])) {
+                $values[$row['t']]['v'] = (float) $row['v'];
+            }
+        }
+
+        return $values;
+    }
+
+    /**
+     * @param string|null $dateFrom
+     * @param string|null $dateTo
+     * @param string|null $dateExpression
+     * @return string
+     */
+    protected function prepareQuery(
+        ?string $dateFrom = null,
+        ?string $dateTo = null,
+        ?string $dateExpression = null
+    ): string {
+        $connection = $this->entityManager->getConnection();
+
+        $tableName = $connection->quoteIdentifier($this->definition->getEntityName());
+        $conditions = $this->definition->getConditions();
+
+        if ($this->definition->getDateField() !== null) {
+            $dateField = $this->getSqlFieldName($this->definition->getDateField());
+            $period    = $this->request->getPeriod();
+            $dateFrom  = $connection->quote($dateFrom ?? $period->getDateFrom()->format('Y-m-d H:i:s'));
+            $dateTo    = $connection->quote($dateTo ?? $period->getDateTo()->format('Y-m-d H:i:s'));
+
+            $conditions[] = "$dateField >= $dateFrom";
+            $conditions[] = "$dateField < $dateTo";
+        }
+
+        foreach ($this->getFilters() as $code => $value) {
+            $filter = $this->definition->getFilter($code);
+            $entityField = $this->getSqlFieldName($filter->getEntityField());
+
+            if ($filter->isMultiple() && !is_array($value)) {
+                $value = [$value];
+            }
+            $operator = ($filter->isMultiple() ? ' IN ' : ' = ');
+            $conditions[] = $entityField . $operator . $this->quoteValue($value);
+        }
+
+        $select = [];
+        $select[] = $this->definition->getValueExpression() . ' AS `v`';
+        if ($dateExpression !== null) {
+            $select[] = $dateExpression . ' AS `t`';
+        }
+
+        $query = 'SELECT ' . implode(',', $select) . " FROM $tableName AS `main`";
+        if (count($conditions) > 0) {
+            $query .= ' WHERE (' . implode(') AND (', $conditions) . ')';
+        }
+
+        return $query;
+    }
+
+    /**
+     * @param string $query
+     * @return array
+     * @throws DbalException
+     */
+    private function executeQuery(string $query): array
+    {
+        return $this->entityManager->getConnection()->executeQuery($query)->fetchAllAssociative();
+    }
+
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    private function quoteValue($value): string
+    {
+        if (is_array($value)) {
+            foreach ($value as $subKey => $subValue) {
+                $value[$subKey] = $this->quoteValue($subValue);
+            }
+            return '(' . implode(',', $value) . ')';
+        }
+
+        if ($value === null) {
+            return 'NULL';
+        }
+
+        if ($value === false) {
+            return 'FALSE';
+        }
+
+        if ($value === true) {
+            return 'TRUE';
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return (string) $value;
+        }
+
+        return $this->entityManager->getConnection()->quote($value);
+    }
+
+
+    /**
+     * @param string $field
+     * @return string
+     */
+    protected function getSqlFieldName(string $field): string
+    {
+        $prefix = '';
+        if (strpos($field, '.') === false) {
+            $prefix = 'main.';
+        }
+
+        return $prefix . $field;
+    }
+}

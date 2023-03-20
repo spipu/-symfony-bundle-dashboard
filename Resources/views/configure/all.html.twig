@@ -1,0 +1,32 @@
+{% import '@SpipuUi/macro/buttons.html.twig' as buttons %}
+<div class="dashboard-container">
+    <h1 class="align-middle">
+        {{ 'spipu.dashboard.configure.title'|trans }}
+    </h1>
+    <div class="d-md-none alert alert-danger">{{ 'spipu.dashboard.flash_alert_message.not_desktop'|trans }}</div>
+    <div class="d-none d-md-flex justify-content-end mb-3">
+        {{ buttons.back(back_url, 'spipu.ui.action.back') }}
+        <button id="dashboard-save" class="btn btn-outline-primary ml-2">
+            <i class="fas fa-edit"></i> {{ 'spipu.ui.action.save'|trans }}
+        </button>
+        {% if dashboard.name != constant('Spipu\\DashboardBundle\\Service\\DashboardService::DEFAULT_NAME') %}
+            <button
+                    type="button"
+                    class="btn btn-outline-danger ml-2 confirm-modal-link"
+                    data-action-message="{{ 'spipu.dashboard.label.title_modal_delete_confirm'|trans }}"
+                    data-action-label="{{ 'spipu.ui.action.delete'|trans }}"
+                    data-action-level="danger"
+                    data-action-icon="trash"
+                    data-action-url="{{ delete_url }}"
+                    title="{{ 'spipu.dashboard.dashboard.delete'|trans }}"
+            >
+                <i class="fas fa-trash"></i> {{ 'spipu.ui.action.delete'|trans }}
+            </button>
+        {% endif %}
+    </div>
+    <div id="dashboard-main-display" class="d-none dashboard-configuration pt-3">
+{% include "@SpipuDashboard/configure/configure-show.html.twig" %}
+{% include "@SpipuDashboard/configure/configure-form.html.twig" %}
+    </div>
+</div>
+<div id="main-display-modal"></div>

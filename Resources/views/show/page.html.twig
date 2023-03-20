@@ -1,0 +1,10 @@
+<div class="dashboard-view">
+    {% if manager.resource.name != 'default' %}
+        <h2 class="dashboard-title">{{ manager.resource.name }}</h2>
+    {% endif %}
+    {% for row in manager.screen.rows %}
+        {% include manager.definition.templateShowRow with {'manager': manager, 'row': row } %}
+    {% else %}
+        <p class="fs-16 m-0 align-center">{{ 'spipu.dashboard.dashboard.empty'|trans }}</p>
+    {% endfor %}
+</div>

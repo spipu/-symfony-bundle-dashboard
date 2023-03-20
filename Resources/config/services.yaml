@@ -1,0 +1,27 @@
+services:
+    # Generic Declaration
+    Spipu\DashboardBundle\:
+        resource:      '../../*'
+        exclude:       '../../{DependencyInjection,Entity,Tests,SpipuDashboardBundle.php}'
+        autowire:      true
+        autoconfigure: true
+
+    Spipu\DashboardBundle\Service\SourceList:
+        autowire: true
+        arguments:
+            $sources: !tagged_iterator 'spipu.widget.source'
+
+    Spipu\DashboardBundle\Service\Ui\Source\DataProvider\:
+        resource:      '../../Service/Ui/Source/DataProvider/*'
+        autowire:      true
+        public:        true
+
+    Spipu\DashboardBundle\Service\DashboardService:
+        autowire:      true
+        arguments:
+            $userIdentifier: '@spipu.ui.service.user_identifier'
+
+    Spipu\DashboardBundle\Service\Ui\WidgetFactory:
+        autowire: true
+        arguments:
+            $container: '@service_container'

@@ -1,0 +1,94 @@
+<?php
+
+/**
+ * This file is part of a Spipu Bundle
+ *
+ * (c) Laurent Minguet
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
+
+use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
+use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
+
+abstract class AbstractDataProvider implements DataProviderInterface
+{
+    /**
+     * @var WidgetRequest
+     */
+    protected WidgetRequest $request;
+
+    /**
+     * @var SourceDefinition
+     */
+    protected SourceDefinition $definition;
+
+    /**
+     * @var array|null
+     */
+    private ?array $filters = null;
+
+    /**
+     * @return WidgetRequest
+     */
+    public function getRequest(): WidgetRequest
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param WidgetRequest $request
+     * @return void
+     */
+    public function setSourceRequest(WidgetRequest $request): void
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @return SourceDefinition
+     */
+    public function getDefinition(): SourceDefinition
+    {
+        return $this->definition;
+    }
+
+    /**
+     * @param SourceDefinition $definition
+     * @return void
+     */
+    public function setSourceDefinition(SourceDefinition $definition): void
+    {
+        $this->definition = $definition;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFilters(): array
+    {
+        if (is_array($this->filters)) {
+            return $this->filters;
+        }
+
+        return $this->request->getFilters();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPreviousPeriodDate(): array
+    {
+        $currentFrom = $this->request->getPeriod()->getDateFrom();
+        $currentTo = $this->request->getPeriod()->getDateTo();
+        $dateFrom = (clone $currentFrom)->add($currentTo->diff($currentFrom));
+        $dateTo = $currentFrom;
+
+        return array($dateFrom, $dateTo);
+    }
+}

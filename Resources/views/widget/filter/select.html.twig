@@ -1,0 +1,20 @@
+<tr>
+    <td>
+        <label for="{{ input_id }}">{{ label }}</label>
+    </td>
+    <td>
+        {% if filter.multiple %}
+            {% set input_name = input_name ~ '[]' %}
+        {% endif %}
+        <select class="form-control form-control-sm col-12" id="{{ input_id }}" name="{{ input_name }}"
+                {% if  filter.multiple %}multiple{% endif %}>
+            {% if not filter.multiple %}
+                <option value=""> - - - - -</option>
+            {% endif %}
+            {% for value, text in filter.options.options %}
+                {% set selected = filter.isSelected(input_value, value) %}
+                <option value="{{ value }}" {% if selected %}selected="selected"{% endif %}>{{ text }}</option>
+            {% endfor %}
+        </select>
+    </td>
+</tr>

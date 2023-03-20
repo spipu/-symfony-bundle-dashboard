@@ -1,0 +1,12 @@
+{% if row.title %}
+    <div class="row">
+        <div class="col-12">
+            <h3 class="tile-row">{{ row.title }}</h3>
+        </div>
+    </div>
+{% endif %}
+<div class="row">
+    {% for col in row.cols %}
+        {% include manager.definition.templateShowCol with {'manager': manager, 'row': row, 'col': col} %}
+    {% endfor %}
+</div>

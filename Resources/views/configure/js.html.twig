@@ -1,0 +1,25 @@
+<script>
+    documentReady.add(function () {
+        new DashboardConfigure(
+            '{{ dashboard.name|escape('js') }}',
+            {{ dashboard.content|json_encode|raw }},
+            {{ sources|json_encode|raw }},
+            {{ periods|json_encode|raw }},
+            {{ types|json_encode|raw }},
+            '{{ save_url }}'
+        );
+    });
+
+    translator.addTranslations({{ getTranslations([
+        'spipu.dashboard.flash_alert_message.success_saved',
+        'spipu.dashboard.label.confirm_delete_row',
+        'spipu.dashboard.label.confirm_clone_row',
+        'spipu.dashboard.label.confirm_delete_widget',
+        'spipu.dashboard.label.source',
+        'spipu.dashboard.label.type',
+        'spipu.dashboard.label.period',
+        'spipu.dashboard.label.label_dashboard_name',
+        'spipu.dashboard.ui.action.confirm',
+        'spipu.dashboard.configure.field_filters'
+    ])|json_encode|raw }});
+</script>

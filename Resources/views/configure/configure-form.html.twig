@@ -1,0 +1,232 @@
+<div class="dashboard-configure-form sticky-top">
+    <div class="card h-100">
+        <div class="card-header fs-16 text-uppercase">
+            {{ 'spipu.dashboard.configure.configure_widget'|trans }}
+        </div>
+        <input type="hidden" id="dashboard-configure-widget-field-id"/>
+        <div id="dashboard-configure-widget-form" class="dashboard-form-content card-body p-0">
+            <div class="form-options">
+                <div class="row" id="dashboard-configure-widget-fieldset-source">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="dashboard-configure-widget-field-source">{{ 'spipu.dashboard.configure.field_source'|trans }}</label>
+                            <select id="dashboard-configure-widget-field-source" class="form-control">
+                                {% for source in sources %}
+                                    <option value="{{ source.code }}">{{ source.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dashboard-configure-widget-fieldset-type">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="dashboard-configure-widget-field-type"
+                                   class="mb-1">{{ 'spipu.dashboard.configure.field_type'|trans }}</label>
+                            <input type="hidden" id="dashboard-configure-widget-field-type"/>
+                            <div class="type-selector-container"
+                                 id="dashboard-configure-widget-field-type-selector">
+                                <div class="type-selector-item" id="type-value_single">
+                                    <div data-value="value_single" class="type-selector value-single">
+                                        <span>123</span>
+                                    </div>
+                                </div>
+                                <div class="type-selector-item" id="type-value_compare">
+                                    <div data-value="value_compare" class="type-selector value-compare">
+                                        <span class="number">123</span>
+                                        <span class="arrow-wrap">
+                                                    <i class="fas fa-caret-down"></i>
+                                                    <i class="fas fa-caret-up"></i>
+                                                </span>
+                                    </div>
+                                </div>
+                                <div class="type-selector-item" id="type-graph">
+                                    <div data-value="graph" class="type-selector"><i
+                                                class="fa fa-2x fa-chart-line"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dashboard-configure-widget-fieldset-period">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="dashboard-configure-widget-field-period">{{ 'spipu.dashboard.configure.field_period'|trans }}</label>
+                            <select id="dashboard-configure-widget-field-period" class="form-control">
+                                {% for period in periods %}
+                                    <option value="{{ period.code }}">{{ period.label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dashboard-configure-widget-fieldset-width">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="dashboard-configure-widget-field-width"
+                                   class="mb-1">{{ 'spipu.dashboard.configure.field_width'|trans }}</label>
+                            <input type="hidden" id="dashboard-configure-widget-field-width"/>
+                            <div id="dashboard-configure-widget-field-width-selector">
+                                <div class="size-selector-container"
+                                     id="dashboard-configure-widget-field-width-selector-4">
+                                    <div data-value="1" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-value="2" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-6 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-value="3" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-9 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="col-3 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-value="4" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-12 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="size-selector-container"
+                                     id="dashboard-configure-widget-field-width-selector-3">
+                                    <div data-value="1" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-4 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="col-4 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                                <div class="col-4 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-value="2" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-8 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="col-4 selector-col-space">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div data-value="3" class="width-selector">
+                                        <div class="selector-item">
+                                            <div class="row h-100">
+                                                <div class="col-12 selector-col-space">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dashboard-configure-widget-fieldset-height">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="dashboard-configure-widget-field-height"
+                                   class="mb-1">{{ 'spipu.dashboard.configure.field_height'|trans }}</label>
+                            <input type="hidden" id="dashboard-configure-widget-field-height"/>
+                            <div class="size-selector-container"
+                                 id="dashboard-configure-widget-field-height-selector">
+                                <div data-value="1" class="height-selector">
+                                    <div class="selector-item">
+                                        <div class="row h-100">
+                                            <div class="col-6 selector-col-space double-block">
+                                                <div class="h-50">
+                                                    <div class="col-item"></div>
+                                                </div>
+                                                <div class="h-50">
+                                                    <div class="col-item bg-light border border-dark"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6 selector-col-space">
+                                                <div class="col-item bg-light border border-dark"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div data-value="2" class="height-selector">
+                                    <div class="selector-item">
+                                        <div class="row h-100">
+                                            <div class="col-6 selector-col-space">
+                                                <div class="col-item"></div>
+                                            </div>
+                                            <div class="col-6 selector-col-space">
+                                                <div class="col-item bg-light border border-dark"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="dashboard-configure-widget-fieldset-filters">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <form id="dashboard-configure-widget-filters-form"></form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-save border-top">
+                <button type="button" class="btn btn-success w-100" id="dashboard-configure-widget-save">
+                    <i class="fa fa-check"></i> {{ 'spipu.dashboard.configure.widget_save'|trans }}
+                </button>
+            </div>
+        </div>
+        <div id="dashboard-configure-widget-empty">
+            <div class="card-body">
+                {{ 'spipu.dashboard.configure.widget_add_text'|trans }}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    documentReady.add(function () {
+        new DashboardSelector(
+            "{{ manager.router.url('main') }}"
+        );
+        new WidgetConfiguration(
+            "{{ manager.router.url('refresh_widget') }}"
+        )
+    });
+
+    translator.addTranslations({{ getTranslations([
+        'spipu.dashboard.flash_alert_message.success_saved',
+        'spipu.dashboard.label.source',
+        'spipu.dashboard.label.type',
+        'spipu.dashboard.label.period',
+        'spipu.dashboard.label.label_dashboard_name'
+    ])|json_encode|raw }});
+</script>

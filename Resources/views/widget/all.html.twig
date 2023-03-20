@@ -1,0 +1,18 @@
+{% if manager.definition.type is same as 'error' %}
+    {% include '@SpipuDashboard/widget/view/error.html.twig' %}
+{% else %}
+    <div class="widget-item card w-100 {% if manager.definition.height > 1 %}widget-height-double{% else %}widget-height-simple{% endif %}"
+         data-id="{{ manager.definition.id }}"
+         id="widget_{{ manager.definition.id }}">
+        <div class="loader">
+            <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+        {% include manager.definition.templateHeader with {'manager': manager} %}
+        {% include '@SpipuDashboard/widget/view/' ~ manager.definition.type ~ '.html.twig' with {'manager': manager} %}
+    </div>
+{% endif %}

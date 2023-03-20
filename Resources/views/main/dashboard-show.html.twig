@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+{% import '@SpipuUi/macro/buttons.html.twig' as buttons %}
+
+{% set menuCurrentItem="partner-home" %}
+
+{% block header_title %}{{ 'spipu.dashboard.page.home.title'|trans() }}{% endblock %}
+
+{% block main_title %}{{ 'spipu.dashboard.page.home.title'|trans() }}{% endblock %}
+
+{% block main_class %}container-fluid{% endblock %}
+
+{% block body %}
+    {{ renderManager(manager) }}
+{% endblock body %}
+
+{% block javascripts %}{{ parent() }}
+    {% include manager.definition.templateShowJs %}
+{% endblock javascripts %}

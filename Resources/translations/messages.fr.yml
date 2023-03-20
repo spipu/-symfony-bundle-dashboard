@@ -1,0 +1,107 @@
+spipu:
+  dashboard:
+    dashboard:
+      create: "Créer un nouveau tableau de board"
+      delete: "Supprimer le tableau de board"
+      configure: "Configurer le tableau de board"
+      rename: "Renommer le tableau de bord"
+      duplicate: "Dupliquer le tableau de board"
+      empty: "Vous n'avez pas encore configurer votre tableau de bord."
+    label:
+      title_modal_delete_confirm: "Voulez vous vraiment supprimer ce tableau de board ?"
+      label_dashboard_name: "Nom du tableau de bord"
+      source: "Source"
+      type: "Type"
+      period: "Période"
+      confirm_delete_row: "Voulez-vous vraiment supprimer cette ligne ?"
+      confirm_clone_row: "Voulez-vous vraiment dupliquer cette ligne ?"
+      confirm_delete_widget: "Voulez-vous vraiment supprimer ce widget ?"
+    configuration:
+      period:
+        title: "Période"
+        from: "De"
+        to: "A"
+        presets: "Préconfigurations"
+      action:
+        apply_period: "Appliquer la période"
+        reset: "Réinitialiser"
+    configure:
+      title: "Configurer mon tableau de bord"
+      default_title: "Dashboard par défaut"
+      row_title: "Titre de la ligne (optionnel)"
+      add_widget: "Ajout widget"
+      intro_text1: "Vous venez de créer un nouveau tableau de bord."
+      intro_text2: "Commencez par ajouter <b>une nouvelle ligne</b> afin d'y mettre vos widgets favoris."
+      add_new_row: "Ajouter une nouvelle ligne"
+      cancel_new_row: "Annuler la nouvelle ligne"
+      nb_cols_select: "Sélectionnez <b>le nombre de widget maximum</b> que vous souhaitez positionner sur cette ligne."
+      nb_cols_help: "(la taille des widgets peut être modifiée dans leurs paramètres)"
+      nb_cols_3: "3 widgets"
+      nb_cols_4: "4 widgets"
+      configure_widget: "Configuration du Widget"
+      field_source: "Donnée"
+      field_type: "Visualisation"
+      field_period: "Période"
+      field_width: "Largeur du widget"
+      field_height: "Hauteur du widget"
+      field_filters: "Filtre"
+      widget_save: "Enregistrer"
+      widget_add_text: "Ajoutez ou sélectionnez un widget pour procéder à sa configuration"
+
+    error:
+      not_allowed_to_delete_dashboard: "Vous ne pouvez pas supprimer ce tableau de bord"
+      not_allowed_to_rename_dashboard: "Vous ne pouvez pas renommer ce tableau de bord"
+      name_missing: "Le nom est obligatoire"
+      name_already_used: "Ce nom est déjà utilisé par un autre tableau de board"
+    flash_alert_message:
+      success_saved: "Votre tableau de board a été sauvegardé"
+      not_desktop: "Vous ne pouvez pas utiliser un petit écran pour éditer votre tableau de bord"
+    title: "Widgets"
+
+    period:
+      hour: "Dernière heure"
+      day-full: "Dernier jour"
+      day-current: "Jour en cours"
+      week: "Dernière semaine"
+      month: "Dernier mois"
+      year: "Dernière année"
+
+    compare:
+      hour: "comparé à l'heure précédente"
+      day-full: "comparé au jour précédent"
+      day-current: "comparé à hier à la même heure"
+      week: "comparé à la semaine précédente"
+      month: "comparé au mois précédent"
+      year: "comparé à l'année précédente"
+
+    period_title:
+      hour: "de l'heure en cours"
+      day-full: "du dernier jour"
+      day-current: "du jour actuel"
+      week: "de la semaine"
+      month: "du mois"
+      year: "de l'année"
+      custom: "(%from - %to)"
+
+    type:
+      value_single: "Valeur simple"
+      value_compare: "Comparaison de valeurs"
+      graph: "Graph"
+
+    source:
+      error:
+        label: "Erreur pendant la génération du widget"
+        title: "Erreur pendant la génération du widget"
+
+    modal:
+      configure:
+        title: "Configurer"
+        confirm: "Appliquer la configuration"
+    ui:
+      action:
+        confirm: "Confirmer"
+        duplicate: "Dupliquer"
+        configure: "Configurer"
+    page:
+      home:
+        title: "Tableau de bord"

@@ -1,0 +1,59 @@
+<div class="row mb-4" id="dashboard-rows-empty">
+    <div class="col-12 text-center">
+        <p class="bold fs-18">
+            {{ 'spipu.dashboard.configure.intro_text1'|trans }}
+        </p>
+        <p class="fs-16">
+            {{ 'spipu.dashboard.configure.intro_text2'|trans|raw }}
+        </p>
+    </div>
+</div>
+<div class="row mb-4" id="dashboard-add-row-buttons">
+    <div class="col-12 text-center">
+        <button class="btn btn-secondary" id="dashboard-add-row-button-add">
+            <i class="fas fa-plus-square"></i> {{ 'spipu.dashboard.configure.add_new_row'|trans }}
+        </button>
+        <button class="btn btn-secondary" id="dashboard-add-row-button-cancel">
+            <i class="fas fa-minus-square"></i> {{ 'spipu.dashboard.configure.cancel_new_row'|trans }}
+        </button>
+    </div>
+</div>
+<div class="row justify-content-center mb-4" id="dashboard-add-row-select">
+    <div class="col-12 col-md-10">
+        <div class="card">
+            <div class="card-body text-center">
+                <p>
+                    {{ 'spipu.dashboard.configure.nb_cols_select'|trans|raw }}<br/>
+                    {{ 'spipu.dashboard.configure.nb_cols_help'|trans }}
+                </p>
+                <div class="row justify-content-center">
+                    <div class="add-row-select-item col-5 col-xl-3" id="dashboard-add-row-select-3">
+                        <div class="card">
+                            <div class="card-body bg-light pt-1 pb-1">
+                                <div class="row">
+                                    <div class="col-4 pl-1 pr-1"><div class="col-item"></div></div>
+                                    <div class="col-4 pl-1 pr-1"><div class="col-item"></div></div>
+                                    <div class="col-4 pl-1 pr-1"><div class="col-item"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ 'spipu.dashboard.configure.nb_cols_3'|trans }}
+                    </div>
+                    <div class="add-row-select-item col-5 col-xl-3" id="dashboard-add-row-select-4">
+                        <div class="card">
+                            <div class="card-body bg-light pt-1 pb-1">
+                                <div class="row">
+                                    <div class="col-3 pl-1 pr-1"><div class="col-item"></div></div>
+                                    <div class="col-3 pl-1 pr-1"><div class="col-item"></div></div>
+                                    <div class="col-3 pl-1 pr-1"><div class="col-item"></div></div>
+                                    <div class="col-3 pl-1 pr-1"><div class="col-item"></div></div>
+                                </div>
+                            </div>
+                        </div>
+                        {{ 'spipu.dashboard.configure.nb_cols_4'|trans }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

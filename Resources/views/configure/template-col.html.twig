@@ -1,0 +1,40 @@
+<div id="dashboard-template-col" class="dashboard-col">
+    <div id="dashboard-template-widget-empty"
+         class="row widget-item widget-item-empty">
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-body text-left">
+                    <i class="far fa-plus-square"></i> {{ 'spipu.dashboard.configure.add_widget'|trans }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard-template-widget" class="row widget-item">
+        <div class="col-12">
+            <div class="card h-100">
+                <div class="card-body">
+                    <div class="nav-options">
+                        <div class="nav-icon dashboard-icon-delete float-right ml-2 border-secondary text-secondary">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <div class="nav-icon dashboard-icon-move float-right ml-2 border-secondary text-secondary">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </div>
+                    </div>
+                    <div data-type="value_single" class="type-icon value-single">
+                        <span>123</span>
+                    </div>
+                    <div data-type="value_compare" class="type-icon value-compare">
+                        <span class="number">123</span>
+                        <span class="arrow-wrap">
+                            <i class="fas fa-caret-down"></i>
+                            <i class="fas fa-caret-up"></i>
+                        </span>
+                    </div>
+                    <i data-type="graph" class="type-icon fa fa-2x fa-chart-line"></i>
+                    <span class="widget-title">...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

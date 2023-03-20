@@ -1,0 +1,34 @@
+<div class="row mb-4" id="dashboard-rows-not-empty">
+    <div class="col-12" id="dashboard-rows">
+        <div class="dashboard-row row mb-4" id="dashboard-template-row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body p-4">
+                        <div class="nav-options d-flex flex-row-reverse">
+                            <div class="nav-icon dashboard-icon-delete float-right ml-2 border-secondary text-secondary">
+                                <i class="fas fa-times"></i>
+                            </div>
+                            <div class="nav-icon dashboard-icon-clone float-right ml-2 border-secondary text-secondary">
+                                <i class="far fa-clone"></i>
+                            </div>
+                            <div class="nav-icon dashboard-icon-move float-right ml-2 border-secondary text-secondary">
+                                <i class="fas fa-arrows-alt-v"></i>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-7">
+                                <div class="form-group mb-2">
+                                    <label>{{ 'spipu.dashboard.configure.row_title'|trans }}</label>
+                                    <input type="text" class="dashboard-row-field-title form-control text-secondary bold" value="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row dashboard-row-cols">
+{% include "@SpipuDashboard/configure/template-col.html.twig" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

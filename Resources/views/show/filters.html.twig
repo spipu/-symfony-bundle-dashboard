@@ -1,0 +1,68 @@
+<div class="col-12 col-md-7 d-flex justify-content-end align-items-start">
+    <div class="dropdown">
+        {% set type = null %}
+        {% set from = null %}
+        {% set to = null %}
+        {% set color = 'secondary' %}
+        {% if manager.request.period is not null %}
+            {% set type = manager.request.period.type %}
+            {% set color = 'danger' %}
+        {% endif %}
+        {% if type == 'custom' %}
+            {% set from = manager.request.period.dateFrom | date('Y-m-d H:i:s') %}
+            {% set to = manager.request.period.dateTo | date('Y-m-d H:i:s') %}
+        {% endif %}
+        <button class="btn btn-outline-{{ color }} dropdown-toggle"
+                type="button"
+                data-toggle="dropdown"
+                aria-expanded="false">
+            <i class="far fa-calendar-alt"></i> {{ 'spipu.dashboard.configuration.period.title'|trans }}
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <form class="px-4 py-3" style="width: max-content" method="get">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="dp[from]">{{ 'spipu.dashboard.configuration.period.from'|trans }}</label>
+                            <input type="datetime-local" class="form-control" id="dp[from]" name="dp[from]" value="{{ from }}">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="dp[to]">{{ 'spipu.dashboard.configuration.period.to'|trans }}</label>
+                            <input type="datetime-local" class="form-control" id="dp[to]" name="dp[to]" value="{{ to }}">
+                        </div>
+                    </div>
+                </div>
+                {% if manager.periods is not empty %}
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="dp[type]">{{ 'spipu.dashboard.configuration.period.presets'|trans }}</label>
+
+                                <select class="form-control" name="dp[type]" id="dp[type]">
+                                    <option value="">---</option>
+                                    {% for period in manager.periods %}
+                                        {% if period.code is same as type %}
+                                            <option value="{{ period.code }}" selected>{{ period.label }}</option>
+                                        {% else %}
+                                            <option value="{{ period.code }}">{{ period.label }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="row">
+                    <div class="col d-flex justify-content-end">
+                        <a href="{{ manager.router.resetUrl }}" class="btn btn-outline-secondary mr-2">{{ 'spipu.dashboard.configuration.action.reset'|trans }}</a>
+                        <button type="submit" class="btn btn-primary">{{ 'spipu.dashboard.configuration.action.apply_period'|trans }}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+spipu:
+  dashboard:
+    dashboard:
+      create: "Create a new dashboard"
+      delete: "Delete the dashboard"
+      configure: "Configure the dashboard"
+      rename: "Rename the dashboard"
+      duplicate: "Duplicate the dashboard"
+      empty: "You did not yet configure your dashboard."
+    label:
+      title_modal_delete_confirm: "Are you sure to delete this dashboard ?"
+      label_dashboard_name: "Dashboard name"
+      source: "Source"
+      type: "Type"
+      period: "Period"
+      confirm_delete_row: "Do you really want to delete this row ?"
+      confirm_clone_row: "Do you really want to clone this row ?"
+      confirm_delete_widget: "Do you really want to delete this widget ?"
+    configuration:
+      period:
+        title: "Period"
+        from: "From"
+        to: "To"
+        presets: "Presets"
+      action:
+        apply_period: "Apply period"
+        reset: "Reset"
+    configure:
+      title: "Configure my dashboard"
+      default_title: "Default dashboard"
+      row_title: "Row title (optional)"
+      add_widget: "Add widget"
+      intro_text1: "You have just created a new dashboard."
+      intro_text2: "Start by adding <b>a new line</b> to put your favorite widgets."
+      add_new_row: "Add a new row"
+      cancel_new_row: "Cancel the new line"
+      nb_cols_select: "Select <b>the maximum number of widget</b> that you want to put on this line."
+      nb_cols_help: "(the size of the widgets can be modified in their parameters)"
+      nb_cols_3: "3 widgets"
+      nb_cols_4: "4 widgets"
+      configure_widget: "Widget Configuration"
+      field_source: "Data"
+      field_type: "Visualisation"
+      field_period: "Period"
+      field_width: "Widget Width"
+      field_height: "Widget Height"
+      field_filters: "Filter"
+      widget_save: "Save"
+      widget_add_text: "Add or select a widget to configure it"
+
+    error:
+      not_allowed_to_delete_dashboard: "You are not allowed to delete this dashboard"
+      not_allowed_to_rename_dashboard: "You are not allowed to rename this dashboard"
+      name_missing: "The name is required"
+      name_already_used: "This name is already used by another dashboard"
+    flash_alert_message:
+      success_saved: "Your dashboard has been saved"
+      not_desktop: "You can not use a small screen to edit your dashboard"
+    title: "Widgets"
+
+    period:
+      hour: "Last hour"
+      day-full: "Last day"
+      day-current: "Current day"
+      week: "Last week"
+      month: "Last month"
+      year: "Last year"
+
+    compare:
+      hour: "compare to the previous hour"
+      day-full: "compare to the previous day"
+      day-current: "compare to yesterday at the same time"
+      week: "compare to the previous week"
+      month: "compare to the previous month"
+      year: "compare to the previous year"
+
+    period_title:
+      hour: "of the current hour"
+      day-full: "of the last day"
+      day-current: "of the current day"
+      week: "of the week"
+      month: "of the month"
+      year: "of the year"
+      custom: "(%from - %to)"
+
+    type:
+      value_single: "Single value"
+      value_compare: "Compare values"
+      graph: "Graph"
+
+    source:
+      error:
+        label: "Error during widget generation"
+        title: "Error during widget generation"
+
+    modal:
+      configure:
+        title: "Configure widget"
+        confirm: "Apply configuration"
+    ui:
+      action:
+        confirm: "Confirm"
+        duplicate: "Duplicate"
+        configure: "Configure"
+    page:
+      home:
+        title: "Dashboard"

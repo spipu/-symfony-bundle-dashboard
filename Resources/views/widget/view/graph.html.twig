@@ -1,0 +1,23 @@
+{% block widget_content %}
+    <div class="widget-content value-graph card-body w-100 h-100 text-center" id="widget_{{ manager.definition.id }}_graph">
+        loading
+    </div>
+    <script>
+        function initWidget_{{ manager.definition.id }}()
+        {
+            new GoogleGraphPlots(
+                'widget_{{ manager.definition.id }}_graph',
+                '{{ manager.request.period.dateFrom|date('Y-m-d H:i:s') }}',
+                '{{ manager.request.period.dateToReal|date('Y-m-d H:i:s') }}',
+                    {{ manager.definition.values|json_encode|raw }},
+                true,
+                "{% if manager.request.period.step < 3600*24 %}HH:mm{% else %}yyyy-MM-dd{% endif %}",
+                40
+            );
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            initWidget_{{ manager.definition.id }}();
+        });
+    </script>
+{% endblock %}

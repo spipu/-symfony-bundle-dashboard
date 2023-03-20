@@ -1,0 +1,62 @@
+{% if manager.definition.source.filters|length %}
+    <button class="btn btn-default btn-sm btn-filter ml-2" data-toggle="modal" data-target="#modalConfiguration{{ manager.definition.id }}">
+        <i class="fas fa-filter {% if manager.request.filters|length > 0 %}text-danger{% endif %}"></i>
+    </button>
+    <div class="modal" tabindex="-1" id="modalConfiguration{{ manager.definition.id }}">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">{{ 'spipu.dashboard.modal.configure.title'|trans }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="get" onsubmit="return true;" class="form"
+                          action="{{ manager.url('refresh') }}"
+                          data-widget-identifier="{{ manager.definition.id }}"
+                          data-widget-role="configuration-form">
+                        {% set filters = manager.definition.source.filters %}
+                        {% if filters|length %}
+                            <div class="card mb-3">
+                                <div class="card-header border-0">
+                                    {{ 'spipu.ui.grid.filter.filters'|trans }}
+                                </div>
+                                <table class="table mb-0">
+                                    <tbody>
+                                    {% for filter in filters %}
+                                        {% set input_value =  null %}
+                                        {% if filter.multiple %}
+                                            {% set input_value = manager.request.filterValueArray(filter.code) %}
+                                        {% else %}
+                                            {% set input_value = manager.request.filterValueString(filter.code) %}
+                                        {% endif %}
+                                        {% include '@SpipuDashboard/widget/filter/select.html.twig' with {
+                                            'filter':      filter,
+                                            'label':       filter.name|trans,
+                                            'input_id':    'filter_' ~ filter.code,
+                                            'input_name':  'fl[' ~ filter.code ~ ']',
+                                            'input_value': input_value
+                                        } %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            data-dismiss="modal"
+                    >{{ 'spipu.ui.action.cancel'|trans }}</button>
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-widget-identifier="{{ manager.definition.id }}"
+                            data-widget-role="validate-configuration"
+                    >{{ 'spipu.dashboard.modal.configure.confirm'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
