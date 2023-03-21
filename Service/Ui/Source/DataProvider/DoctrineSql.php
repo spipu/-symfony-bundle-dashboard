@@ -24,7 +24,7 @@ class DoctrineSql extends AbstractDataProvider
     /**
      * @var EntityManagerInterface
      */
-    private EntityManagerInterface $entityManager;
+    protected EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -180,7 +180,7 @@ class DoctrineSql extends AbstractDataProvider
      * @return array
      * @throws DbalException
      */
-    private function executeQuery(string $query): array
+    protected function executeQuery(string $query): array
     {
         return $this->entityManager->getConnection()->executeQuery($query)->fetchAllAssociative();
     }
@@ -189,7 +189,7 @@ class DoctrineSql extends AbstractDataProvider
      * @param mixed $value
      * @return string
      */
-    private function quoteValue($value): string
+    protected function quoteValue($value): string
     {
         if (is_array($value)) {
             foreach ($value as $subKey => $subValue) {
