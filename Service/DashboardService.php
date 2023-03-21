@@ -71,24 +71,46 @@ class DashboardService
         $dashboard = $this->createDashboard($user, self::DEFAULT_NAME);
 
         $content = $definition ? $definition->getDefaultConfig() : [];
-        foreach ($content['rows'] as &$row) {
-            foreach ($row['cols'] as &$col) {
-                foreach ($col['widgets'] as &$widget) {
-                    if (!array_key_exists('id', $widget)) {
-                        $widget['id'] = uniqid();
-                    }
-                    if (!array_key_exists('filters', $widget)) {
-                        $widget['filters'] = [];
-                    }
-                }
-            }
-        }
+        $this->completeDefaultConfig($content);
 
         $dashboard->setContent($content);
 
         $this->entityManager->flush();
 
         return $dashboard;
+    }
+
+    /**
+     * @param array $content
+     * @return void
+     */
+    private function completeDefaultConfig(array &$content): void
+    {
+        if (!array_key_exists('rows', $content)) {
+            return;
+        }
+
+        foreach ($content['rows'] as &$row) {
+            if (!array_key_exists('cols', $row)) {
+                continue;
+            }
+
+            foreach ($row['cols'] as &$col) {
+                if (!array_key_exists('widgets', $col)) {
+                    continue;
+                }
+
+                foreach ($col['widgets'] as &$widget) {
+                    if (!array_key_exists('id', $widget)) {
+                        $widget['id'] = uniqid();
+                    }
+
+                    if (!array_key_exists('filters', $widget)) {
+                        $widget['filters'] = [];
+                    }
+                }
+            }
+        }
     }
 
     /**
