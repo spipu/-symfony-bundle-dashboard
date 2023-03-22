@@ -42,4 +42,9 @@ interface DataProviderInterface
      * @return array
      */
     public function getValues(): array;
+
+    /**
+     * @return array
+     */
+    public function getSpecificValues(): array;
 }

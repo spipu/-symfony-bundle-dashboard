@@ -433,8 +433,11 @@ class DashboardConfigure {
         let htmlWidget = this.getTemplate('widget');
         htmlWidget.attr('id', htmlWidgetId);
         htmlWidget.addClass(this.getWidgetCssHeight(newHeight));
-        htmlWidget.find('.type-icon ').hide();
+        htmlWidget.find('.type-icon').hide();
         htmlWidget.find('.type-icon[data-type=' + newConfig.type + ']').show();
+        if (newConfig.type === 'specific') {
+            htmlWidget.find('.type-icon[data-type=specific]').addClass('fa-' + this.sources[newConfig.source].specificDisplay);
+        }
         htmlWidget.find('.widget-title').html(title);
 
         htmlWidget.on('click', $.proxy(function () {
@@ -623,8 +626,10 @@ class DashboardConfigure {
         let value = $('#dashboard-configure-widget-field-source').val();
 
         let needPeriod = false;
+        let specificDisplay = null;
         if (this.sources[value]) {
             needPeriod = (this.sources[value].needPeriod === 1);
+            specificDisplay = (this.sources[value].specificDisplay);
         }
 
         if (needPeriod) {
@@ -645,12 +650,25 @@ class DashboardConfigure {
             $('#dashboard-configure-widget-fieldset-filters').hide();
         }
 
+        if (specificDisplay) {
+            $("#type-specific .type-selector").html('<i class="fa fa-2x fa-' + specificDisplay + '"></i>');
+            $("#type-specific").show();
+        } else {
+            $("#type-specific .type-selector").html('');
+            $("#type-specific").hide();
+        }
+
         let previousType = $('#dashboard-configure-widget-field-type').val();
         for (let type in this.types) {
-            if ((this.types[type].needPeriod && !needPeriod) || (this.types[type].height > this.currentWidget.params.maxHeight)) {
+            if (
+                (specificDisplay && type !== 'specific')
+                || (!specificDisplay && type === 'specific')
+                || (this.types[type].needPeriod && !needPeriod)
+                || (this.types[type].height > this.currentWidget.params.maxHeight)
+            ) {
                 $('#type-' + type).hide();
                 if (previousType === type) {
-                    this.widgetFormSelectTypeValue('value_single');
+                    this.widgetFormSelectTypeValue(specificDisplay ? 'specific' : 'value_single');
                 }
             } else {
                 $('#type-' + type).show();

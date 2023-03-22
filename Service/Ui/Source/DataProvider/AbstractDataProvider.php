@@ -92,4 +92,12 @@ abstract class AbstractDataProvider implements DataProviderInterface
 
         return array($dateFrom, $dateTo);
     }
+
+    /**
+     * @return array
+     */
+    public function getSpecificValues(): array
+    {
+        return [];
+    }
 }

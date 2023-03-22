@@ -21,11 +21,9 @@
                 <div class="row" id="dashboard-configure-widget-fieldset-type">
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="dashboard-configure-widget-field-type"
-                                   class="mb-1">{{ 'spipu.dashboard.configure.field_type'|trans }}</label>
+                            <label for="dashboard-configure-widget-field-type" class="mb-1">{{ 'spipu.dashboard.configure.field_type'|trans }}</label>
                             <input type="hidden" id="dashboard-configure-widget-field-type"/>
-                            <div class="type-selector-container"
-                                 id="dashboard-configure-widget-field-type-selector">
+                            <div class="type-selector-container" id="dashboard-configure-widget-field-type-selector">
                                 <div class="type-selector-item" id="type-value_single">
                                     <div data-value="value_single" class="type-selector value-single">
                                         <span>123</span>
@@ -35,14 +33,19 @@
                                     <div data-value="value_compare" class="type-selector value-compare">
                                         <span class="number">123</span>
                                         <span class="arrow-wrap">
-                                                    <i class="fas fa-caret-down"></i>
-                                                    <i class="fas fa-caret-up"></i>
-                                                </span>
+                                            <i class="fas fa-caret-down"></i>
+                                            <i class="fas fa-caret-up"></i>
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="type-selector-item" id="type-graph">
-                                    <div data-value="graph" class="type-selector"><i
-                                                class="fa fa-2x fa-chart-line"></i></div>
+                                    <div data-value="graph" class="type-selector">
+                                        <i class="fa fa-2x fa-chart-line"></i>
+                                    </div>
+                                </div>
+                                <div class="type-selector-item" id="type-specific">
+                                    <div data-value="specific" class="type-selector">
+                                    </div>
                                 </div>
                             </div>
                         </div>

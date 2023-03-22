@@ -125,10 +125,11 @@ class SourceList
 
         foreach ($this->sources as $source) {
             $definition[$source->getDefinition()->getCode()] = [
-                'code' => $source->getDefinition()->getCode(),
-                'label' => $this->getSourceLabel($source),
-                'needPeriod' => ($source->getDefinition()->getDateField() !== null ? 1 : 0),
-                'filters' => $this->getSourceFilters($source)
+                'code'            => $source->getDefinition()->getCode(),
+                'label'           => $this->getSourceLabel($source),
+                'filters'         => $this->getSourceFilters($source),
+                'needPeriod'      => ($source->getDefinition()->needPeriod() ? 1 : 0),
+                'specificDisplay' => $source->getDefinition()->getSpecificDisplayIcon(),
             ];
         }
 

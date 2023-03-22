@@ -68,6 +68,16 @@ abstract class Source
     private array $filters = [];
 
     /**
+     * @var string|null
+     */
+    private ?string $specificDisplayIcon = null;
+
+    /**
+     * @var string|null
+     */
+    private ?string $specificDisplayTemplate = null;
+
+    /**
      * @param string $code
      * @param string|null $entityName
      */
@@ -133,9 +143,9 @@ abstract class Source
 
     /**
      * @param string $type
-     * @return Source
+     * @return $this
      */
-    public function setType(string $type): Source
+    public function setType(string $type): self
     {
         $this->type = $type;
 
@@ -152,9 +162,9 @@ abstract class Source
 
     /**
      * @param string $suffix
-     * @return Source
+     * @return $this
      */
-    public function setSuffix(string $suffix): Source
+    public function setSuffix(string $suffix): self
     {
         $this->suffix = $suffix;
 
@@ -171,9 +181,9 @@ abstract class Source
 
     /**
      * @param string|null $dateField
-     * @return Source
+     * @return $this
      */
-    public function setDateField(?string $dateField): Source
+    public function setDateField(?string $dateField): self
     {
         $this->dateField = $dateField;
 
@@ -190,9 +200,9 @@ abstract class Source
 
     /**
      * @param string $valueExpression
-     * @return Source
+     * @return $this
      */
-    public function setValueExpression(string $valueExpression): Source
+    public function setValueExpression(string $valueExpression): self
     {
         $this->valueExpression = $valueExpression;
 
@@ -209,9 +219,9 @@ abstract class Source
 
     /**
      * @param bool $lowerBetter
-     * @return Source
+     * @return $this
      */
-    public function setLowerBetter(bool $lowerBetter): Source
+    public function setLowerBetter(bool $lowerBetter): self
     {
         $this->lowerBetter = $lowerBetter;
 
@@ -228,9 +238,9 @@ abstract class Source
 
     /**
      * @param array $conditions
-     * @return Source
+     * @return $this
      */
-    public function setConditions(array $conditions): Source
+    public function setConditions(array $conditions): self
     {
         $this->conditions = $conditions;
 
@@ -241,7 +251,7 @@ abstract class Source
      * @param string $condition
      * @return $this
      */
-    public function addCondition(string $condition): Source
+    public function addCondition(string $condition): self
     {
         $this->conditions[] = $condition;
 
@@ -260,7 +270,7 @@ abstract class Source
      * @param SourceFilter $filter
      * @return $this
      */
-    public function addFilter(SourceFilter $filter): Source
+    public function addFilter(SourceFilter $filter): self
     {
         $this->filters[$filter->getCode()] = $filter;
 
@@ -271,7 +281,7 @@ abstract class Source
      * @param string $code
      * @return $this
      */
-    public function removeFilter(string $code): Source
+    public function removeFilter(string $code): self
     {
         if (array_key_exists($code, $this->filters)) {
             unset($this->filters[$code]);
@@ -295,5 +305,50 @@ abstract class Source
     public function getFilter(string $code): ?SourceFilter
     {
         return $this->filters[$code] ?? null;
+    }
+
+    /**
+     * @param string $icon
+     * @param string $template
+     * @return $this
+     */
+    public function setSpecificDisplay(string $icon, string $template): self
+    {
+        $this->specificDisplayIcon = $icon;
+        $this->specificDisplayTemplate = $template;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSpecificDisplay(): bool
+    {
+        return $this->specificDisplayIcon !== null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSpecificDisplayIcon(): ?string
+    {
+        return $this->specificDisplayIcon;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSpecificDisplayTemplate(): ?string
+    {
+        return $this->specificDisplayTemplate;
+    }
+
+    /**
+     * @return bool
+     */
+    public function needPeriod(): bool
+    {
+        return (!$this->hasSpecificDisplay()) && ($this->getDateField() !== null);
     }
 }

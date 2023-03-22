@@ -25,6 +25,7 @@ class WidgetTypeService
     public const TYPE_VALUE_SINGLE = 'value_single';
     public const TYPE_VALUE_COMPARE = 'value_compare';
     public const TYPE_GRAPH = 'graph';
+    public const TYPE_SPECIFIC = 'specific';
 
     /**
      * @var string[]
@@ -33,6 +34,7 @@ class WidgetTypeService
         self::TYPE_VALUE_SINGLE,
         self::TYPE_VALUE_COMPARE,
         self::TYPE_GRAPH,
+        self::TYPE_SPECIFIC,
     ];
 
     /**
@@ -40,6 +42,7 @@ class WidgetTypeService
      */
     private array $typesWithoutPeriod = [
         self::TYPE_VALUE_SINGLE,
+        self::TYPE_SPECIFIC,
     ];
 
     /**
@@ -142,6 +145,9 @@ class WidgetTypeService
             case self::TYPE_GRAPH:
                 $widget->setValues($this->getValuesTypeValues($widgetManager));
                 break;
+            case self::TYPE_SPECIFIC:
+                $widget->setValues($this->getValuesTypeSpecific($widgetManager));
+                break;
             default:
                 throw new TypeException('unknown widget type code');
         }
@@ -197,6 +203,15 @@ class WidgetTypeService
         }
 
         return $values;
+    }
+
+    /**
+     * @param WidgetManager $widgetManager
+     * @return array
+     */
+    private function getValuesTypeSpecific(WidgetManager $widgetManager): array
+    {
+        return $widgetManager->getDataProvider()->getSpecificValues();
     }
 
     /**
