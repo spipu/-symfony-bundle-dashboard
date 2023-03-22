@@ -340,6 +340,10 @@ class DashboardConfigure {
                 'height': maxHeight,
                 'filters': []
             }
+
+            if (this.sources[config.source].specificDisplay) {
+                config.type = 'specific';
+            }
         }
 
         if (config.period === null) {
