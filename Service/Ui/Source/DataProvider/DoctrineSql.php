@@ -21,26 +21,13 @@ use Spipu\DashboardBundle\Exception\SourceException;
 
 class DoctrineSql extends AbstractDataProvider
 {
-    /**
-     * @var EntityManagerInterface
-     */
     protected EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return float
-     * @throws DbalException
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
     public function getValue(): float
     {
         $query = $this->prepareQuery();
@@ -56,12 +43,6 @@ class DoctrineSql extends AbstractDataProvider
         return (float) $rows[0]['v'];
     }
 
-    /**
-     * @return float
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     * @throws DbalException
-     */
     public function getPreviousValue(): float
     {
         list($dateFrom, $dateTo) = $this->getPreviousPeriodDate();
@@ -79,11 +60,6 @@ class DoctrineSql extends AbstractDataProvider
         return (float) $rows[0]['v'];
     }
 
-    /**
-     * @return array
-     * @throws SourceException
-     * @throws DbalException
-     */
     public function getValues(): array
     {
         $dateField = $this->definition->getDateField();
@@ -123,12 +99,6 @@ class DoctrineSql extends AbstractDataProvider
         return $values;
     }
 
-    /**
-     * @param string|null $dateFrom
-     * @param string|null $dateTo
-     * @param string|null $dateExpression
-     * @return string
-     */
     protected function prepareQuery(
         ?string $dateFrom = null,
         ?string $dateTo = null,
@@ -174,20 +144,11 @@ class DoctrineSql extends AbstractDataProvider
         return $query;
     }
 
-    /**
-     * @param string $query
-     * @return array
-     * @throws DbalException
-     */
     protected function executeQuery(string $query): array
     {
         return $this->entityManager->getConnection()->executeQuery($query)->fetchAllAssociative();
     }
 
-    /**
-     * @param mixed $value
-     * @return string
-     */
     protected function quoteValue($value): string
     {
         if (is_array($value)) {
@@ -216,11 +177,6 @@ class DoctrineSql extends AbstractDataProvider
         return $this->entityManager->getConnection()->quote($value);
     }
 
-
-    /**
-     * @param string $field
-     * @return string
-     */
     protected function getSqlFieldName(string $field): string
     {
         $prefix = '';

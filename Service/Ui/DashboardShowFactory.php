@@ -22,45 +22,13 @@ use Twig\Environment as Twig;
 
 class DashboardShowFactory
 {
-    /**
-     * @var Twig
-     */
     private Twig $twig;
-
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
-
-    /**
-     * @var DashboardRouter
-     */
     private DashboardRouter $router;
-
-    /**
-     * @var PeriodService
-     */
     private PeriodService $periodService;
-
-    /**
-     * @var DashboardViewerService
-     */
     private DashboardViewerService $viewerService;
-
-    /**
-     * @var WidgetFactory
-     */
     private WidgetFactory $widgetFactory;
 
-    /**
-     * GridFactory constructor.
-     * @param Twig $twig
-     * @param RequestStack $requestStack
-     * @param DashboardRouter $router
-     * @param PeriodService $periodService
-     * @param DashboardViewerService $viewerService
-     * @param WidgetFactory $widgetFactory
-     */
     public function __construct(
         Twig $twig,
         RequestStack $requestStack,

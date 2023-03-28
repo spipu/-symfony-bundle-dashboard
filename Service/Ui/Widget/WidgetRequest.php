@@ -15,69 +15,43 @@ namespace Spipu\DashboardBundle\Service\Ui\Widget;
 
 use Spipu\DashboardBundle\Entity\Period;
 use Spipu\DashboardBundle\Entity\Widget\Widget;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Spipu\DashboardBundle\Service\Ui\AbstractRequest;
+use Symfony\Component\HttpFoundation\RequestStack;
 
-class WidgetRequest
+class WidgetRequest extends AbstractRequest
 {
     public const KEY_FILTERS = 'fl';
 
-    /**
-     * @var SymfonyRequest
-     */
-    private SymfonyRequest $request;
-
-    /**
-     * @var Widget
-     */
     private Widget $definition;
-
-    /**
-     * @var string
-     */
-    private string $sessionPrefixKey;
-
-    /**
-     * @var Period|null
-     */
     private ?Period $period = null;
-    /**
-     * @var array
-     */
     private array $filters = [];
 
-    /**
-     * @param SymfonyRequest $request
-     * @param Widget $definition
-     */
     public function __construct(
-        SymfonyRequest $request,
+        RequestStack $requestStack,
         Widget $definition
     ) {
-        $this->request = $request;
+        parent::__construct($requestStack);
         $this->definition = $definition;
     }
 
-    /**
-     * @return void
-     */
     public function prepare()
     {
         $this->setSessionPrefixKey('widget.' . $this->definition->getId());
         $this->prepareFilters();
     }
 
+    public function getFilters(): array
+    {
+        return $this->filters;
+    }
+
     /**
      * @return void
-     * @SuppressWarnings(PMD.CyclomaticComplexity)
      */
     private function prepareFilters(): void
     {
-        $this->filters = [];
-        $this->filters = $this->getSessionValue('filters', $this->filters);
-        $this->filters = (array)$this->request->get(self::KEY_FILTERS, $this->filters);
-        if ($this->request->get(self::KEY_FILTERS) === null) {
-            $this->filters = $this->definition->getFilters();
-        }
+        $this->getFiltersFromRequest();
+
         foreach ($this->filters as $key => $value) {
             $filter = $this->definition->getSource()->getFilter($key);
             if (!$filter) {
@@ -107,48 +81,16 @@ class WidgetRequest
         $this->setSessionValue('filters', $this->filters);
     }
 
-    /**
-     * @param string $key
-     * @return string
-     */
-    private function getSessionKey(string $key): string
+    private function getFiltersFromRequest(): void
     {
-        return $this->sessionPrefixKey . '.' . $key;
+        $this->filters = [];
+        $this->filters = $this->getSessionValue('filters', $this->filters);
+        $this->filters = (array)$this->getCurrentRequest()->get(self::KEY_FILTERS, $this->filters);
+        if ($this->getCurrentRequest()->get(self::KEY_FILTERS) === null) {
+            $this->filters = $this->definition->getFilters();
+        }
     }
 
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getSessionValue(string $key, $default)
-    {
-        return $this->request->getSession()->get($this->getSessionKey($key), $default);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    private function setSessionValue(string $key, $value): void
-    {
-        $this->request->getSession()->set($this->getSessionKey($key), $value);
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getFilters(): array
-    {
-        return $this->filters;
-    }
-
-    /**
-     * @param string $key
-     * @param string|null $subKey
-     * @return string
-     */
     public function getFilterValueString(string $key, string $subKey = null): string
     {
         if (!array_key_exists($key, $this->filters)) {
@@ -170,12 +112,6 @@ class WidgetRequest
         return $this->filters[$key][$subKey];
     }
 
-
-    /**
-     * @param string $key
-     * @param string|null $subKey
-     * @return array
-     */
     public function getFilterValueArray(string $key, string $subKey = null): array
     {
         if (!array_key_exists($key, $this->filters)) {
@@ -197,9 +133,6 @@ class WidgetRequest
         return $this->filters[$key][$subKey];
     }
 
-    /**
-     * @return Period|null
-     */
     public function getPeriod(): ?Period
     {
         if (!$this->period) {
@@ -209,23 +142,10 @@ class WidgetRequest
         return $this->period;
     }
 
-    /**
-     * @param Period|null $period
-     * @return WidgetRequest
-     */
     public function setPeriod(?Period $period): WidgetRequest
     {
         $this->period = $period;
 
         return $this;
-    }
-
-    /**
-     * @param string $sessionPrefixKey
-     * @return void
-     */
-    private function setSessionPrefixKey(string $sessionPrefixKey): void
-    {
-        $this->sessionPrefixKey = $sessionPrefixKey;
     }
 }

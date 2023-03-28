@@ -16,8 +16,5 @@ use Spipu\UiBundle\Service\Ui\UiManagerInterface;
 
 interface WidgetManagerInterface extends UiManagerInterface
 {
-    /**
-     * @return DataProviderInterface
-     */
     public function getDataProvider(): DataProviderInterface;
 }

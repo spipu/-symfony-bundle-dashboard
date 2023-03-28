@@ -20,13 +20,7 @@ interface SourceDefinitionInterface
     public const TYPE_INT = 'int';
     public const TYPE_FLOAT = 'float';
 
-    /**
-     * @return SourceDefinition
-     */
     public function getDefinition(): SourceDefinition;
 
-    /**
-     * @return string[]
-     */
     public function getRolesNeeded(): array;
 }

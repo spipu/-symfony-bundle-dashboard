@@ -16,35 +16,15 @@ use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 
 interface DataProviderInterface
 {
-    /**
-     * @param WidgetRequest $request
-     * @return void
-     */
     public function setSourceRequest(WidgetRequest $request): void;
 
-    /**
-     * @param SourceDefinition $definition
-     * @return void
-     */
     public function setSourceDefinition(SourceDefinition $definition): void;
 
-    /**
-     * @return float
-     */
     public function getValue(): float;
 
-    /**
-     * @return float
-     */
     public function getPreviousValue(): float;
 
-    /**
-     * @return array
-     */
     public function getValues(): array;
 
-    /**
-     * @return array
-     */
     public function getSpecificValues(): array;
 }

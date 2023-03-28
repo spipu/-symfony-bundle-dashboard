@@ -40,79 +40,19 @@ use Throwable;
  */
 class DashboardControllerService extends AbstractController
 {
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
-
-    /**
-     * @var DashboardService
-     */
     private DashboardService $dashboardService;
-
-    /**
-     * @var WidgetService
-     */
     private WidgetService $widgetService;
-
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
-
-    /**
-     * @var SourceList
-     */
     private SourceList $sourceList;
-
-    /**
-     * @var PeriodService
-     */
     private PeriodService $periodService;
-
-    /**
-     * @var WidgetTypeService
-     */
     private WidgetTypeService $widgetTypeService;
-
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $entityManager;
-
-    /**
-     * @var DashboardConfiguratorService
-     */
     private DashboardConfiguratorService $dashboardConfiguratorService;
-
-    /**
-     * @var DashboardShowFactory
-     */
     private DashboardShowFactory $dashboardShowFactory;
-
-    /**
-     * @var WidgetFactory
-     */
     private WidgetFactory $widgetFactory;
-
-    /**
-     * @var DashboardDefinitionInterface
-     */
     private DashboardDefinitionInterface $dashboardDefinition;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param DashboardService $dashboardService
-     * @param WidgetService $widgetService
-     * @param RequestStack $requestStack
-     * @param SourceList $sourceList
-     * @param PeriodService $periodService
-     * @param WidgetTypeService $widgetTypeService
-     * @param EntityManagerInterface $entityManager
-     * @param DashboardConfiguratorService $dashboardConfiguratorService
-     * @param DashboardShowFactory $dashboardShowFactory
-     * @param WidgetFactory $widgetFactory
-     */
     public function __construct(
         TranslatorInterface $translator,
         DashboardService $dashboardService,
@@ -139,18 +79,6 @@ class DashboardControllerService extends AbstractController
         $this->widgetFactory = $widgetFactory;
     }
 
-    /**
-     * @param DashboardDefinitionInterface $dashboardDefinition
-     * @param string $routeName
-     * @param string $action
-     * @param int|null $id
-     * @return Response
-     * @throws PeriodException
-     * @throws SourceException
-     * @throws TypeException
-     * @throws UiException
-     * @throws WidgetException
-     */
     public function dispatch(
         DashboardDefinitionInterface $dashboardDefinition,
         string $routeName,
@@ -187,9 +115,6 @@ class DashboardControllerService extends AbstractController
         throw $this->createNotFoundException('Unknown action');
     }
 
-    /**
-     * @return RedirectResponse
-     */
     protected function actionCreate(): RedirectResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -210,11 +135,6 @@ class DashboardControllerService extends AbstractController
         return $this->redirect($this->buildUrl('configure', $dashboard->getId()));
     }
 
-    /**
-     * @param int|null $id
-     * @return Response
-     * @throws TypeException
-     */
     protected function actionConfigure(?int $id): Response
     {
         if ($id === null) {
@@ -243,10 +163,6 @@ class DashboardControllerService extends AbstractController
         );
     }
 
-    /**
-     * @param int|null $id
-     * @return Response
-     */
     protected function actionDelete(?int $id): Response
     {
         if ($id === null) {
@@ -269,10 +185,6 @@ class DashboardControllerService extends AbstractController
         return $this->redirect($this->buildUrl('show'));
     }
 
-    /**
-     * @param int|null $id
-     * @return Response
-     */
     protected function actionDuplicate(?int $id): Response
     {
         if ($id === null) {
@@ -302,10 +214,6 @@ class DashboardControllerService extends AbstractController
         return $this->redirect($this->buildUrl('show', $dashboard->getId()));
     }
 
-    /**
-     * @param int|null $id
-     * @return Response
-     */
     protected function actionSave(?int $id): Response
     {
         if ($id === null) {
@@ -346,11 +254,6 @@ class DashboardControllerService extends AbstractController
         return new JsonResponse(['status' => 'ok']);
     }
 
-    /**
-     * @param int|null $id
-     * @return Response
-     * @throws UiException
-     */
     protected function actionShow(?int $id = null): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -382,13 +285,6 @@ class DashboardControllerService extends AbstractController
         );
     }
 
-    /**
-     * @param int $id
-     * @return Response
-     * @throws PeriodException
-     * @throws WidgetException
-     * @throws SourceException
-     */
     protected function actionRefreshWidget(int $id): Response
     {
         $identifier = $this->requestStack->getCurrentRequest()->get('identifier');
@@ -422,33 +318,16 @@ class DashboardControllerService extends AbstractController
         );
     }
 
-    /**
-     * @param string $type
-     * @param string $message
-     * @param array $params
-     * @return void
-     */
     protected function addFlashTrans(string $type, string $message, array $params = []): void
     {
         $this->addFlash($type, $this->trans($message, $params));
     }
 
-    /**
-     * @param string $message
-     * @param array $params
-     * @return string
-     */
     protected function trans(string $message, array $params = []): string
     {
         return $this->translator->trans($message, $params);
     }
 
-    /**
-     * @param string $action
-     * @param int|null $id
-     * @param array $parameters
-     * @return string
-     */
     protected function buildUrl(string $action, ?int $id = null, array $parameters = []): string
     {
         return $this->generateUrl(

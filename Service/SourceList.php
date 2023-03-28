@@ -21,25 +21,14 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SourceList
 {
-    /**
-     * @var Security
-     */
     private Security $security;
-
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
+
     /**
      * @var SourceDefinitionInterface[]
      */
     private array $sources = [];
 
-    /**
-     * @param Security $security
-     * @param TranslatorInterface $translator
-     * @param iterable $sources
-     */
     public function __construct(
         Security $security,
         TranslatorInterface $translator,
@@ -53,10 +42,6 @@ class SourceList
         }
     }
 
-    /**
-     * @param SourceDefinitionInterface $source
-     * @return void
-     */
     private function addSource(SourceDefinitionInterface $source): void
     {
         if ($this->isUserGranted($source)) {
@@ -86,11 +71,6 @@ class SourceList
         return $labels;
     }
 
-    /**
-     * @param string $code
-     * @return SourceDefinitionInterface
-     * @throws SourceException
-     */
     public function getSource(string $code): SourceDefinitionInterface
     {
         if (!array_key_exists($code, $this->sources)) {
@@ -100,10 +80,6 @@ class SourceList
         return $this->sources[$code];
     }
 
-    /**
-     * @param SourceDefinitionInterface $source
-     * @return string
-     */
     public function getSourceLabel(SourceDefinitionInterface $source): string
     {
         $code = 'spipu.dashboard.source.' . $source->getDefinition()->getCode() . '.label';
@@ -116,9 +92,6 @@ class SourceList
         return $value;
     }
 
-    /**
-     * @return array
-     */
     public function getDefinitions(): array
     {
         $definition = [];
@@ -143,10 +116,6 @@ class SourceList
         return $definition;
     }
 
-    /**
-     * @param SourceDefinitionInterface $source
-     * @return array
-     */
     public function getSourceFilters(
         SourceDefinitionInterface $source
     ): array {
@@ -164,11 +133,6 @@ class SourceList
         );
     }
 
-
-    /**
-     * @param SourceDefinitionInterface $sourceDefinition
-     * @return bool
-     */
     private function isUserGranted(SourceDefinitionInterface $sourceDefinition): bool
     {
         if (empty($sourceDefinition->getRolesNeeded())) {

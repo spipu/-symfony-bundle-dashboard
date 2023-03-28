@@ -15,101 +15,55 @@ use DateTimeInterface;
 
 class Period
 {
-    /**
-     * @var string
-     */
     private string $type;
-
-    /**
-     * @var DateTimeInterface
-     */
     private DateTimeInterface $dateFrom;
-
-    /**
-     * @var DateTimeInterface
-     */
     private DateTimeInterface $dateTo;
-
-    /**
-     * @var int
-     */
     private int $step;
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return Period
-     */
-    public function setType(string $type): Period
+    public function setType(string $type): self
     {
         $this->type = $type;
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDateFrom(): DateTimeInterface
     {
         return $this->dateFrom;
     }
 
-    /**
-     * @param DateTimeInterface $dateFrom
-     * @return Period
-     */
-    public function setDateFrom(DateTimeInterface $dateFrom): Period
+    public function setDateFrom(DateTimeInterface $dateFrom): self
     {
         $this->dateFrom = $dateFrom;
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDateTo(): DateTimeInterface
     {
         return $this->dateTo;
     }
 
-    /**
-     * @param DateTimeInterface $dateTo
-     * @return Period
-     */
-    public function setDateTo(DateTimeInterface $dateTo): Period
+    public function setDateTo(DateTimeInterface $dateTo): self
     {
         $this->dateTo = $dateTo;
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getStep(): int
     {
         return $this->step;
     }
 
-    /**
-     * @param int $step
-     * @return Period
-     */
-    public function setStep(int $step): Period
+    public function setStep(int $step): self
     {
         $this->step = $step;
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface
-     */
     public function getDateToReal(): DateTimeInterface
     {
         $date = clone $this->dateTo;

@@ -30,11 +30,6 @@ class Screen
         return $this->rows;
     }
 
-    /**
-     * @param string $title
-     * @param int $nbCols
-     * @return Row
-     */
     public function addRow(string $title, int $nbCols): Row
     {
         $row = new Row($this, count($this->rows) + 1, $title, $nbCols);

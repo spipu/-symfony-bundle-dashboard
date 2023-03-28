@@ -17,19 +17,8 @@ use Spipu\DashboardBundle\Entity\Widget\Widget;
 
 class Column
 {
-    /**
-     * @var Row
-     */
     private Row $row;
-
-    /**
-     * @var int
-     */
     private int $id;
-
-    /**
-     * @var int
-     */
     private int $width;
 
     /**
@@ -37,11 +26,6 @@ class Column
      */
     private array $widgets = [];
 
-    /**
-     * @param Row $row
-     * @param int $id
-     * @param int $width
-     */
     public function __construct(Row $row, int $id, int $width)
     {
         $this->id = $id;
@@ -49,25 +33,16 @@ class Column
         $this->width = $width;
     }
 
-    /**
-     * @return Row
-     */
     public function getRow(): Row
     {
         return $this->row;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return int
-     */
     public function getWidth(): int
     {
         return $this->width;
@@ -81,10 +56,6 @@ class Column
         return $this->widgets;
     }
 
-    /**
-     * @param Widget $widget
-     * @return $this
-     */
     public function addWidget(Widget $widget): self
     {
         $this->widgets[] = $widget;

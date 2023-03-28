@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service\Ui;
 
 use Spipu\DashboardBundle\Entity\Widget\Widget;
-use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Service\WidgetTypeService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -22,31 +21,11 @@ use Twig\Environment as Twig;
 
 class WidgetFactory
 {
-    /**
-     * @var ContainerInterface
-     */
     private ContainerInterface $container;
-
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
-
-    /**
-     * @var Twig
-     */
     private Twig $twig;
-    /**
-     * @var WidgetTypeService
-     */
     private WidgetTypeService $widgetTypeService;
 
-    /**
-     * @param ContainerInterface $container
-     * @param RequestStack $requestStack
-     * @param Twig $twig
-     * @param WidgetTypeService $widgetTypeService
-     */
     public function __construct(
         ContainerInterface $container,
         RequestStack $requestStack,
@@ -59,29 +38,18 @@ class WidgetFactory
         $this->widgetTypeService = $widgetTypeService;
     }
 
-    /**
-     * @param Widget $widget
-     * @return WidgetManager
-     * @throws SourceException
-     */
     public function create(
         Widget $widget
     ): WidgetManager {
         return new WidgetManager(
             $this->container,
-            $this->requestStack->getCurrentRequest(),
+            $this->requestStack,
             $this->twig,
             $this->widgetTypeService,
             $widget
         );
     }
 
-    /**
-     * @param string $message
-     * @param Widget $widget
-     * @return WidgetManager
-     * @throws SourceException
-     */
     public function createError(string $message, Widget $widget): WidgetManager
     {
         $widget
@@ -90,7 +58,7 @@ class WidgetFactory
 
         return new WidgetManager(
             $this->container,
-            $this->requestStack->getCurrentRequest(),
+            $this->requestStack,
             $this->twig,
             $this->widgetTypeService,
             $widget

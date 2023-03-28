@@ -14,33 +14,19 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\QueryBuilder;
 use Spipu\DashboardBundle\Exception\SourceException;
 
 class DoctrineDql extends AbstractDataProvider
 {
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(
-        EntityManagerInterface $entityManager
-    ) {
+    public function __construct(EntityManagerInterface $entityManager)
+    {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return float
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
     public function getValue(): float
     {
         $queryBuilder = $this->prepareQueryBuilder();
@@ -48,11 +34,6 @@ class DoctrineDql extends AbstractDataProvider
         return (float) $queryBuilder->getQuery()->getSingleScalarResult();
     }
 
-    /**
-     * @return float
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
     public function getPreviousValue(): float
     {
         $queryBuilder = $this->prepareQueryBuilder();
@@ -111,9 +92,6 @@ class DoctrineDql extends AbstractDataProvider
         return $values;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     protected function prepareQueryBuilder(): QueryBuilder
     {
         $queryBuilder = $this->entityManager->createQueryBuilder();
@@ -142,10 +120,6 @@ class DoctrineDql extends AbstractDataProvider
         return $queryBuilder;
     }
 
-    /**
-     * @param Andx $where
-     * @return array
-     */
     protected function prepareQueryBuilderPeriod(
         Andx $where
     ): array {
@@ -162,13 +136,6 @@ class DoctrineDql extends AbstractDataProvider
         return $parameters;
     }
 
-    /**
-     * @param QueryBuilder $queryBuilder
-     * @param Andx $where
-     * @param string $code
-     * @param mixed $value
-     * @return array
-     */
     private function prepareQueryBuilderFilter(
         QueryBuilder $queryBuilder,
         Andx $where,
@@ -192,10 +159,6 @@ class DoctrineDql extends AbstractDataProvider
     }
 
 
-    /**
-     * @param string $field
-     * @return string
-     */
     protected function getDqlFieldName(string $field): string
     {
         $prefix = '';

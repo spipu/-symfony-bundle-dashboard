@@ -15,10 +15,6 @@ namespace Spipu\DashboardBundle\Entity\Source;
 
 class SourceDql extends Source
 {
-    /**
-     * @param string $code
-     * @param string|null $entityName
-     */
     public function __construct(string $code, ?string $entityName = null)
     {
         parent::__construct($code, $entityName);

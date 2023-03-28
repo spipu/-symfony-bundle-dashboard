@@ -58,26 +58,16 @@ class DashboardConfig implements DashboardInterface
      */
     private string $userIdentifier;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     */
     public function setName(string $name): self
     {
         $name = trim(strip_tags($name));
@@ -87,28 +77,18 @@ class DashboardConfig implements DashboardInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         return $this->userIdentifier;
     }
 
-    /**
-     * @param string $userIdentifier
-     * @return DashboardConfig
-     */
-    public function setUserIdentifier(string $userIdentifier): DashboardConfig
+    public function setUserIdentifier(string $userIdentifier): self
     {
         $this->userIdentifier = $userIdentifier;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getContent(): array
     {
         $content = $this->content;
@@ -120,10 +100,6 @@ class DashboardConfig implements DashboardInterface
         return $content;
     }
 
-    /**
-     * @param array|null $content
-     * @return $this
-     */
     public function setContent(?array $content): self
     {
         $this->content = $content;
@@ -131,9 +107,6 @@ class DashboardConfig implements DashboardInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefault(): bool
     {
         return $this->name === self::DEFAULT_NAME;

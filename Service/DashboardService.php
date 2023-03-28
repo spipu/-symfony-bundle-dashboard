@@ -29,26 +29,10 @@ class DashboardService
 {
     public const DEFAULT_NAME = 'default';
 
-    /**
-     * @var EntityManagerInterface
-     */
     private EntityManagerInterface $entityManager;
-
-    /**
-     * @var DashboardConfigRepository
-     */
     private DashboardConfigRepository $dashboardRepository;
-
-    /**
-     * @var UserIdentifierInterface
-     */
     private UserIdentifierInterface $userIdentifier;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param DashboardConfigRepository $dashboardRepository
-     * @param UserIdentifierInterface $userIdentifier
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         DashboardConfigRepository $dashboardRepository,
@@ -59,11 +43,6 @@ class DashboardService
         $this->userIdentifier = $userIdentifier;
     }
 
-    /**
-     * @param UserInterface $user
-     * @param DashboardDefinitionInterface|null $definition
-     * @return DashboardConfig
-     */
     public function createDefaultDashboard(
         UserInterface $user,
         ?DashboardDefinitionInterface $definition = null
@@ -80,10 +59,6 @@ class DashboardService
         return $dashboard;
     }
 
-    /**
-     * @param array $content
-     * @return void
-     */
     private function completeDefaultConfig(array &$content): void
     {
         if (!array_key_exists('rows', $content)) {
@@ -113,11 +88,6 @@ class DashboardService
         }
     }
 
-    /**
-     * @param UserInterface $user
-     * @param string $dashboardName
-     * @return DashboardConfig
-     */
     public function createDashboard(UserInterface $user, string $dashboardName): DashboardConfig
     {
         $dashboard = new DashboardConfig();
@@ -133,12 +103,6 @@ class DashboardService
         return $dashboard;
     }
 
-    /**
-     * @param DashboardConfig $dashboard
-     * @param UserInterface $user
-     * @param string $name
-     * @return DashboardConfig
-     */
     public function duplicateDashboard(DashboardConfig $dashboard, UserInterface $user, string $name): DashboardConfig
     {
         $dashboardDuplicated = new DashboardConfig();
@@ -153,11 +117,6 @@ class DashboardService
         return $dashboardDuplicated;
     }
 
-    /**
-     * @param DashboardConfig $dashboard
-     * @param UserInterface $user
-     * @return void
-     */
     public function deleteDashboard(DashboardConfig $dashboard, UserInterface $user): void
     {
         if (!$this->canUpdateDashboard($dashboard, $user)) {
@@ -168,12 +127,6 @@ class DashboardService
         $this->entityManager->flush();
     }
 
-    /**
-     * @param UserInterface $user
-     * @param int|null $id
-     * @param DashboardDefinitionInterface|null $definition
-     * @return DashboardConfig|null
-     */
     public function getDashboard(
         UserInterface $user,
         ?int $id,
@@ -191,11 +144,6 @@ class DashboardService
         );
     }
 
-    /**
-     * @param UserInterface $user
-     * @param DashboardDefinitionInterface|null $definition
-     * @return DashboardConfig
-     */
     public function getDefaultDashboard(
         UserInterface $user,
         ?DashboardDefinitionInterface $definition = null
@@ -212,11 +160,6 @@ class DashboardService
         return $dashboard;
     }
 
-    /**
-     * @param DashboardConfig $dashboard
-     * @param UserInterface $user
-     * @return bool
-     */
     public function canUpdateDashboard(DashboardConfig $dashboard, UserInterface $user): bool
     {
         return (
@@ -234,12 +177,6 @@ class DashboardService
         return $this->dashboardRepository->getUserConfigs($this->userIdentifier->getIdentifier($user));
     }
 
-    /**
-     * @param DashboardConfig $dashboard
-     * @param string $identifier
-     * @return array
-     * @throws WidgetException
-     */
     public function getWidgetDefinition(DashboardConfig $dashboard, string $identifier): array
     {
         $definition = $dashboard->getContent();
