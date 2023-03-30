@@ -41,22 +41,12 @@ abstract class AbstractRequest
         return $this->sessionPrefixKey . '.' . $key;
     }
 
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    protected function getSessionValue(string $key, $default)
+    protected function getSessionValue(string $key, mixed $default): mixed
     {
         return $this->requestStack->getSession()->get($this->getSessionKey($key), $default);
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    protected function setSessionValue(string $key, $value): void
+    protected function setSessionValue(string $key, mixed $value): void
     {
         $this->requestStack->getSession()->set($this->getSessionKey($key), $value);
     }
