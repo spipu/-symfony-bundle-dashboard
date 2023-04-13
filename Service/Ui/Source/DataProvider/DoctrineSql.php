@@ -106,13 +106,12 @@ class DoctrineSql extends AbstractDataProvider
                 'v' => null,
             ];
         }
-        $formattedDate = $dateFrom->format('Y-m-d H:i:s');
 
         $dateField = $this->getSqlFieldName($dateField);
-
+        $formattedDate = $dateFrom->format('Y-m-d H:i:s');
         $dateExpression = "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)";
-        $query = $this->prepareQuery(null, null, $dateExpression);
-        $query .= " GROUP BY $dateExpression ORDER BY $dateField ASC ";
+
+        $query = $this->prepareQuery(null, null, $dateExpression). " GROUP BY t ORDER BY t ASC ";
 
         $rows = $this->executeQuery($query);
         foreach ($rows as $row) {

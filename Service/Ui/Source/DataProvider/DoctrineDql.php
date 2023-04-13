@@ -93,15 +93,16 @@ class DoctrineDql extends AbstractDataProvider
         }
 
         $dateField = $this->getDqlFieldName($dateField);
-        $queryBuilder = $this->prepareQueryBuilder();
         $formattedDate = $dateFrom->format('Y-m-d H:i:s');
-        $keyField = "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)";
-        $queryBuilder->addSelect($keyField . ' AS t');
-        $queryBuilder->groupBy('t');
-        $queryBuilder->orderBy($dateField, 'ASC');
-        $result = $queryBuilder->getQuery()->getArrayResult();
+        $dateExpression = "FLOOR(TIMESTAMPDIFF(SECOND, '" . $formattedDate . "', " . $dateField . ") / $timeStep)";
 
-        foreach ($result as $row) {
+        $queryBuilder = $this->prepareQueryBuilder();
+        $queryBuilder->addSelect($dateExpression . ' AS t');
+        $queryBuilder->groupBy('t');
+        $queryBuilder->orderBy('t', 'ASC');
+
+        $rows = $queryBuilder->getQuery()->getArrayResult();
+        foreach ($rows as $row) {
             if (isset($values[$row['t']])) {
                 $values[$row['t']]['v'] = (float) $row['v'];
             }
