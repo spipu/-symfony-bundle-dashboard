@@ -60,11 +60,12 @@ spipu:
 
     period:
       hour: "Last hour"
-      day-full: "Last day"
       day-current: "Current day"
+      day-full: "Last day"
       week: "Last week"
       month: "Last month"
       year: "Last year"
+      custom: "Custom"
 
     compare:
       hour: "compare to the previous hour"

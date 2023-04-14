@@ -5,6 +5,7 @@ class WidgetConfiguration {
     {
         this.refresherUrl = refresherUrl;
         this.init();
+        this.periodFormInit();
     }
 
     init()
@@ -14,6 +15,25 @@ class WidgetConfiguration {
             let identifier = $(element).data('id');
             this.addListeners(identifier)
         })
+    }
+
+    periodFormInit()
+    {
+        $('#dp_type').on('change', $.proxy(this.periodFormOnChange, this));
+        this.periodFormOnChange();
+    }
+
+    periodFormOnChange()
+    {
+        let type = $('#dp_type').val();
+
+        if (type === 'custom') {
+            $('#dp_from').attr('disabled', false);
+            $('#dp_to').attr('disabled', false);
+        } else {
+            $('#dp_from').attr('disabled', true).val('');
+            $('#dp_to').attr('disabled', true).val('');
+        }
     }
 
     addListeners(widgetIdentifier)

@@ -60,11 +60,12 @@ spipu:
 
     period:
       hour: "Dernière heure"
-      day-full: "Dernier jour"
       day-current: "Jour en cours"
+      day-full: "Dernier jour"
       week: "Dernière semaine"
       month: "Dernier mois"
       year: "Dernière année"
+      custom: "Personnalisé"
 
     compare:
       hour: "comparé à l'heure précédente"
