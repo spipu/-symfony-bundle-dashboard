@@ -235,45 +235,55 @@ class PeriodService
             $dateFrom = $dateTo;
             $dateTo = $tempDateFrom;
         }
+
         $interval = $dateTo->getTimestamp() - $dateFrom->getTimestamp();
+        $step = $this->calculateStep($interval);
 
-        // Default : 1 month.
-        $step = 3600 * 24 * 365 / 12;
-
-        // 6 months => 1 week.
-        if ($interval < (3600 * 24 * 365 / 2)) {
-            $step = 3600 * 24 * 7;
-        }
-
-        // 1 month => 1 day.
-        if ($interval < (3600 * 24 * 365 / 12)) {
-            $step = 3600 * 24;
-        }
-
-        // 72 hours => 2 hours.
-        if ($interval < 72 * 3600) {
-            $step = 3600 * 2;
-        }
-
-        // 24 hours => 60 minutes.
-        if ($interval < 24 * 3600) {
-            $step = 3600;
-        }
-
-        // 2 hour => 15 minutes.
-        if ($interval < 3600 * 2) {
-            $step = 60 * 15;
-        }
-
-        // 1 hour => 1 minute.
-        if ($interval < 3600) {
-            $step = 60;
-        }
-
-        $period->setDateFrom($dateFrom)
+        $period
+            ->setDateFrom($dateFrom)
             ->setDateTo($dateTo)
             ->setStep($step);
 
         return $period;
+    }
+
+    /**
+     * @param int $interval
+     * @return int
+     */
+    public function calculateStep(int $interval): int
+    {
+        // 1 hour => 1 minute.
+        if ($interval < 3600) {
+            return 60;
+        }
+
+        // 3 hour => 15 minutes.
+        if ($interval < 3 * 3600) {
+            return 60 * 15;
+        }
+
+        // 2 days => 60 minutes.
+        if ($interval < 2 * 24 * 3600) {
+            return 3600;
+        }
+
+        // 7 days => 2 hours.
+        if ($interval < 7 * 24 * 3600) {
+            return 3600 * 2;
+        }
+
+        // 1 month => 1 day.
+        if ($interval < (3600 * 24 * 365 / 12)) {
+            return 3600 * 24;
+        }
+
+        // 6 months => 1 week.
+        if ($interval < (3600 * 24 * 365 / 2)) {
+            return 3600 * 24 * 7;
+        }
+
+        // Default : 1 month.
+        return 3600 * 24 * 365 / 12;
     }
 }
