@@ -24,7 +24,7 @@ class SourceDql extends Source
         parent::__construct($code, $entityName);
 
         $this
-            ->setDataProviderServiceName('\Spipu\DashboardBundle\Service\Ui\Source\DataProvider\DoctrineDql')
+            ->setDataProviderServiceName('Spipu\DashboardBundle\Service\Ui\Source\DataProvider\DoctrineDql')
             ->setValueExpression('COUNT(main)')
             ->setDateField('createdAt')
         ;
