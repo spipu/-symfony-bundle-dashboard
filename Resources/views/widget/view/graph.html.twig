@@ -1,33 +1,31 @@
-{% block widget_content %}
-    <div class="widget-content value-graph card-body w-100 h-100 text-center" id="widget_{{ manager.definition.id }}_graph">
-        loading
-    </div>
-    <script>
-        {% if manager.request.period.step < 2 * 3600 %}
-            {% set dateFormat='HH:mm' %}
-            {% set margeBottom='30' %}
-        {% elseif manager.request.period.step < 24 * 3600 %}
-            {% set dateFormat='yyyy-MM-dd HH' %}
-            {% set margeBottom='60' %}
-        {% else %}
-            {% set dateFormat='yyyy-MM-dd' %}
-            {% set margeBottom='40' %}
-        {% endif %}
-        function initWidget_{{ manager.definition.id }}()
-        {
-            new GoogleGraphPlots(
-                'widget_{{ manager.definition.id }}_graph',
-                '{{ manager.request.period.dateFrom|date('Y-m-d H:i:s') }}',
-                '{{ manager.request.period.dateToReal|date('Y-m-d H:i:s') }}',
-                {{ manager.definition.values|json_encode|raw }},
-                true,
-                "{{ dateFormat }}",
-                {{ margeBottom }}
-            );
-        }
+<div class="widget-content value-graph card-body w-100 h-100 text-center" id="widget_{{ manager.definition.id }}_graph">
+    loading
+</div>
+<script>
+    {% if manager.request.period.step < 2 * 3600 %}
+        {% set dateFormat='HH:mm' %}
+        {% set margeBottom='30' %}
+    {% elseif manager.request.period.step < 24 * 3600 %}
+        {% set dateFormat='yyyy-MM-dd HH' %}
+        {% set margeBottom='60' %}
+    {% else %}
+        {% set dateFormat='yyyy-MM-dd' %}
+        {% set margeBottom='40' %}
+    {% endif %}
+    function initWidget_{{ manager.definition.id }}()
+    {
+        new GoogleGraphPlots(
+            'widget_{{ manager.definition.id }}_graph',
+            '{{ manager.request.period.dateFrom|date('Y-m-d H:i:s') }}',
+            '{{ manager.request.period.dateToReal|date('Y-m-d H:i:s') }}',
+            {{ manager.definition.values|json_encode|raw }},
+            true,
+            "{{ dateFormat }}",
+            {{ margeBottom }}
+        );
+    }
 
-        document.addEventListener("DOMContentLoaded", () => {
-            initWidget_{{ manager.definition.id }}();
-        });
-    </script>
-{% endblock %}
+    document.addEventListener("DOMContentLoaded", () => {
+        initWidget_{{ manager.definition.id }}();
+    });
+</script>

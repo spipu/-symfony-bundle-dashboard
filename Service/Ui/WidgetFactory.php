@@ -78,13 +78,12 @@ class WidgetFactory
 
     /**
      * @param string $message
-     * @param string $id
+     * @param Widget $widget
      * @return WidgetManager
      * @throws SourceException
      */
-    public function createError(string $message, string $id): WidgetManager
+    public function createError(string $message, Widget $widget): WidgetManager
     {
-        $widget = new Widget($id);
         $widget
             ->setSourceLabel($message)
             ->setType('error');

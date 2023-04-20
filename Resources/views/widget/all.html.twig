@@ -1,20 +1,24 @@
-{% if manager.definition.type is same as 'error' %}
-    {% include '@SpipuDashboard/widget/view/error.html.twig' %}
+{% set errorTemplate = '@SpipuDashboard/widget/view/error.html.twig' %}
+{% if manager.definition.type == 'error' %}
+    {% set widgetTemplate = errorTemplate %}
+{% elseif manager.definition.source.hasSpecificDisplay %}
+    {% set widgetTemplate = manager.definition.source.specificDisplayTemplate %}
 {% else %}
     {% set widgetTemplate = '@SpipuDashboard/widget/view/' ~ manager.definition.type ~ '.html.twig' %}
-    {% if manager.definition.source.hasSpecificDisplay %}{% set widgetTemplate = manager.definition.source.specificDisplayTemplate %}{% endif %}
-    <div class="widget-item card w-100 {% if manager.definition.height > 1 %}widget-height-double{% else %}widget-height-simple{% endif %}"
-         data-id="{{ manager.definition.id }}"
-         id="widget_{{ manager.definition.id }}">
-        <div class="loader">
-            <div class="lds-ring">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        {% include manager.definition.templateHeader with {'manager': manager} %}
-        {% include widgetTemplate with {'manager': manager} %}
-    </div>
 {% endif %}
+<div class="widget-item card w-100 {% if manager.definition.height > 1 %}widget-height-double{% else %}widget-height-simple{% endif %}"
+     data-dashboard-role="widget"
+     data-dashboard-widget="{{ manager.definition.id }}"
+     id="widget_{{ manager.definition.id }}"
+>
+    <div class="loader">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    {% include manager.definition.templateHeader with {'manager': manager} %}
+    {% include [widgetTemplate, errorTemplate] with {'manager': manager} %}
+</div>

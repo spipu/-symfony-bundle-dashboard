@@ -25,6 +25,11 @@ class Column
     /**
      * @var int
      */
+    private int $id;
+
+    /**
+     * @var int
+     */
     private int $width;
 
     /**
@@ -34,10 +39,12 @@ class Column
 
     /**
      * @param Row $row
+     * @param int $id
      * @param int $width
      */
-    public function __construct(Row $row, int $width)
+    public function __construct(Row $row, int $id, int $width)
     {
+        $this->id = $id;
         $this->row = $row;
         $this->width = $width;
     }
@@ -48,6 +55,14 @@ class Column
     public function getRow(): Row
     {
         return $this->row;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**

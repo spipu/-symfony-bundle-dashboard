@@ -37,7 +37,7 @@ class Screen
      */
     public function addRow(string $title, int $nbCols): Row
     {
-        $row = new Row($this, $title, $nbCols);
+        $row = new Row($this, count($this->rows) + 1, $title, $nbCols);
         $this->rows[] = $row;
 
         return $row;

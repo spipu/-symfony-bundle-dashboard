@@ -413,7 +413,7 @@ class DashboardControllerService extends AbstractController
             );
             $manager->validate();
         } catch (Exception $exception) {
-            $manager = $this->widgetFactory->createError($exception->getMessage(), $widget->getId());
+            $manager = $this->widgetFactory->createError($exception->getMessage(), $widget);
         }
 
         return $this->render(

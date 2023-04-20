@@ -10,9 +10,9 @@ class WidgetConfiguration {
 
     init()
     {
-        let widgetItems = $('.widget-item');
+        let widgetItems = this.getWidgetItems();
         widgetItems.each((widgetItem, element) => {
-            let identifier = $(element).data('id');
+            let identifier = $(element).data('dashboard-widget');
             this.addListeners(identifier)
         })
     }
@@ -36,9 +36,20 @@ class WidgetConfiguration {
         }
     }
 
+    getWidgetItems()
+    {
+        return $('[data-dashboard-role="widget"]');
+    }
+
+    getWidgetItem(widgetIdentifier)
+    {
+        return $(`[data-dashboard-role="widget"][data-dashboard-widget="${widgetIdentifier}"]`);
+    }
+
     addListeners(widgetIdentifier)
     {
-        let widgetItem = $(`.widget-item[data-id="${widgetIdentifier}"]`);
+        let widgetItem = this.getWidgetItem(widgetIdentifier);
+
         widgetItem.find('button[data-widget-role="validate-configuration"]').on('click', () => {
             widgetItem.find(`#modalConfiguration${widgetIdentifier}`).modal('hide');
 
@@ -55,8 +66,9 @@ class WidgetConfiguration {
 
     refreshWidget(widgetIdentifier, values)
     {
-        let widgetItem = $(`.widget-item[data-id="${widgetIdentifier}"]`);
+        let widgetItem = this.getWidgetItem(widgetIdentifier);
         widgetItem.addClass('loading');
+
         fetch(
             `${this.refresherUrl}?identifier=${widgetIdentifier}&${this.buildQueryParameters(values)}`,
             {
@@ -67,8 +79,8 @@ class WidgetConfiguration {
                 return response.text();
             })
             .then((html) => {
-                let $replacement = $(html);
-                $(`.widget-item[data-id="${widgetIdentifier}"]`).replaceWith($replacement);
+                widgetItem.replaceWith($(html));
+
                 let initFunction = `initWidget_${widgetIdentifier}`;
                 if (typeof window[initFunction] === 'function') {
                     window[initFunction]();

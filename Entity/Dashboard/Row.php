@@ -21,6 +21,11 @@ class Row
     private Screen $screen;
 
     /**
+     * @var int
+     */
+    private int $id;
+
+    /**
      * @var string
      */
     private string $title;
@@ -37,11 +42,13 @@ class Row
 
     /**
      * @param Screen $screen
+     * @param int $id
      * @param string $title
      * @param int $nbCols
      */
-    public function __construct(Screen $screen, string $title, int $nbCols)
+    public function __construct(Screen $screen, int $id, string $title, int $nbCols)
     {
+        $this->id = $id;
         $this->screen = $screen;
         $this->title = $title;
         $this->nbCols = $nbCols;
@@ -53,6 +60,14 @@ class Row
     public function getScreen(): Screen
     {
         return $this->screen;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     /**
@@ -69,7 +84,7 @@ class Row
      */
     public function addCol(int $width): Column
     {
-        $col = new Column($this, $width);
+        $col = new Column($this, count($this->cols) + 1, $width);
 
         $this->cols[] = $col;
 

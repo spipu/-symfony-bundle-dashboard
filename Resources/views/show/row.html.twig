@@ -1,11 +1,11 @@
 {% if row.title %}
-    <div class="row">
+    <div class="row" data-dashboard-role="row-title" data-dashboard-row="{{ row.id }}">
         <div class="col-12">
             <h3 class="tile-row">{{ row.title }}</h3>
         </div>
     </div>
 {% endif %}
-<div class="row">
+<div class="row" data-dashboard-role="row" data-dashboard-row="{{ row.id }}">
     {% for col in row.cols %}
         {% include manager.definition.templateShowCol with {'manager': manager, 'row': row, 'col': col} %}
     {% endfor %}

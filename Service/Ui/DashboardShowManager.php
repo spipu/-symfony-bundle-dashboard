@@ -201,7 +201,7 @@ class DashboardShowManager implements DashboardShowManagerInterface
                 $widgetManager->getRequest()->setPeriod($this->request->getPeriod());
                 $widgetManager->validate();
             } catch (Exception $exception) {
-                $widgetManager = $this->widgetFactory->createError($exception->getMessage(), $widget->getId());
+                $widgetManager = $this->widgetFactory->createError($exception->getMessage(), $widget);
             }
             $this->widgetManagers[$widget->getId()] = $widgetManager;
         }

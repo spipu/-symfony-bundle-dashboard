@@ -1,5 +1,5 @@
 {% if (col.width > 0) %}
-    <div class="col-widgets-container col-12 col-md-{{ (12 * col.width / row.nbCols) }}">
+    <div class="col-widgets-container col-12 col-md-{{ (12 * col.width / row.nbCols) }}" data-dashboard-role="col" data-dashboard-row="{{ row.id }}" data-dashboard-col="{{ col.id }}">
         {% for widget in col.widgets %}
             {{ renderManager(manager.widgetManager(widget)) }}
         {% endfor %}
