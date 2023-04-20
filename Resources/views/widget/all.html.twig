@@ -9,6 +9,7 @@
 <div class="widget-item card w-100 {% if manager.definition.height > 1 %}widget-height-double{% else %}widget-height-simple{% endif %}"
      data-dashboard-role="widget"
      data-dashboard-widget="{{ manager.definition.id }}"
+     data-dashboard-time="{{ manager.definition.generationTime }}"
      id="widget_{{ manager.definition.id }}"
 >
     <div class="loader">

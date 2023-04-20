@@ -68,6 +68,11 @@ class Widget
     private ?SourceDefinition $source = null;
 
     /**
+     * @var int
+     */
+    private int $generationTime = 0;
+
+    /**
      * @param string $id
      */
     public function __construct(string $id)
@@ -289,6 +294,25 @@ class Widget
     public function setTemplateConfig(string $templateConfig): self
     {
         $this->templates['config'] = $templateConfig;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGenerationTime(): int
+    {
+        return $this->generationTime;
+    }
+
+    /**
+     * @param int $generationTime
+     * @return Widget
+     */
+    public function setGenerationTime(int $generationTime): self
+    {
+        $this->generationTime = $generationTime;
 
         return $this;
     }

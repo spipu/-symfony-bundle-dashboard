@@ -135,6 +135,7 @@ class WidgetTypeService
             throw new TypeException('this type is not allowed');
         }
 
+        $startTime = microtime(true);
         switch ($widget->getType()) {
             case self::TYPE_VALUE_SINGLE:
                 $widget->setValues($this->getValuesTypeValueSingle($widgetManager));
@@ -151,6 +152,7 @@ class WidgetTypeService
             default:
                 throw new TypeException('unknown widget type code');
         }
+        $widget->setGenerationTime((int) (1000000. * (microtime(true) - $startTime)));
     }
 
     /**
