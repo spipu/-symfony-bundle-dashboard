@@ -1,8 +1,9 @@
-<div class="card-header d-flex justify-content-between align-items-center">
+<div class="card-header d-flex justify-content-between align-items-center {% if manager.definition.isTooSlow %}bg-warning{% endif %}">
     {% set sourceCode = manager.definition.source.code %}
     {% set type = manager.request.period.type %}
     {% set from = manager.request.period.dateFrom|date('Y-m-d H:i') %}
     {% set to = manager.request.period.dateTo|date('Y-m-d H:i') %}
     <span>{{ ('spipu.dashboard.source.' ~ sourceCode ~ '.title')|trans({'%period': ('spipu.dashboard.period_title.' ~ type)|trans({'%from': from, '%to': to})}) }}</span>
+    {% if manager.definition.isTooSlow %}<i class="fa fa-exclamation-triangle" title="WARNING - the widget generation is too slow - {{ (manager.definition.generationTime / 1000)|number_format(1, '.', ' ') }} ms"></i>{% endif %}
     {% include manager.definition.templateConfig with {'manager': manager} %}
 </div>

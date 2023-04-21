@@ -316,4 +316,12 @@ class Widget
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isTooSlow(): bool
+    {
+        return ($this->generationTime > 100000);
+    }
 }
