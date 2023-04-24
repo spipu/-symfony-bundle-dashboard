@@ -16,6 +16,7 @@ spipu:
       confirm_delete_row: "Voulez-vous vraiment supprimer cette ligne ?"
       confirm_clone_row: "Voulez-vous vraiment dupliquer cette ligne ?"
       confirm_delete_widget: "Voulez-vous vraiment supprimer ce widget ?"
+      confirm_ignore_save: "Voulez-vous vraiment annuler vos modifications ?"
     configuration:
       period:
         title: "Période"

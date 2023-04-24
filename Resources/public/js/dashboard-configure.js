@@ -19,6 +19,9 @@ class DashboardConfigure {
         this.templates = [];
         this.currentRowId = 0;
 
+        this.needSave = false;
+        this.dashboardResetSave();
+
         this.rowMoveEvent = {};
         this.rowMoveEventInit();
 
@@ -50,14 +53,15 @@ class DashboardConfigure {
         }
 
         $('#dashboard-save').on('click', $.proxy(this.dashboardSave, this));
+        $('#dashboard-back').on('click', $.proxy(this.dashboardBack, this));
         $('#dashboard-add-row-button-add').show().on('click', $.proxy(this.rowToggleSelect, this));
         $('#dashboard-add-row-button-cancel').hide().on('click', $.proxy(this.rowToggleSelect, this));
         $('#dashboard-add-row-select').hide();
         $('#dashboard-add-row-select-3').on('click', $.proxy(function () {
-            this.rowAdd(3);
+            this.rowAddManual(3);
         }, this));
         $('#dashboard-add-row-select-4').on('click', $.proxy(function () {
-            this.rowAdd(4);
+            this.rowAddManual(4);
         }, this));
 
         $('.dashboard-row')
@@ -67,6 +71,43 @@ class DashboardConfigure {
 
         this.widgetFormInit();
         this.dashboardDisplayAll();
+        this.dashboardResetSave();
+    }
+
+    dashboardNeedSave(purpose)
+    {
+        this.needSave = true;
+        $('#dashboard-save').show();
+    }
+
+    dashboardResetSave()
+    {
+        this.needSave = false;
+        $('#dashboard-save').hide();
+    }
+
+    dashboardBack()
+    {
+        if (!this.needSave) {
+            return true;
+        }
+
+        let popup = window.ConfirmPopups.create(
+            window.translator.trans('spipu.dashboard.label.confirm_ignore_save'),
+            window.translator.trans('spipu.dashboard.ui.action.confirm'),
+            'check',
+            'warning',
+            false,
+        );
+
+        popup.addCallbackConfirm(
+            $.proxy(function () {
+                popup.close();
+                window.location = $('#dashboard-back').attr('href');
+            }, this)
+        );
+
+        return false;
     }
 
     dashboardDisplayAll()
@@ -145,6 +186,12 @@ class DashboardConfigure {
         $('#dashboard-add-row-button-add').toggle();
         $('#dashboard-add-row-button-cancel').toggle();
         $('#dashboard-add-row-select').toggle();
+    }
+
+    rowAddManual(nbCol)
+    {
+        this.rowAdd(nbCol, false);
+        this.dashboardNeedSave('row add');
     }
 
     rowAdd(nbCol, onlyAddHtml)
@@ -278,6 +325,7 @@ class DashboardConfigure {
         }
 
         this.dashboardContent.rows[rowKey]['title'] = $('#dashboard-row-' + rowId + '-title').first().val();
+        this.dashboardNeedSave('row title');
     }
 
     widgetFormInit()
@@ -286,7 +334,7 @@ class DashboardConfigure {
         $('#dashboard-configure-widget-field-type-selector').find('div.type-selector').on('click', $.proxy(this.widgetFormSelectType, this));
         $('#dashboard-configure-widget-field-width-selector').find('div.width-selector').on('click', $.proxy(this.widgetFormSelectWidth, this));
         $('#dashboard-configure-widget-field-height-selector').find('div.height-selector').on('click', $.proxy(this.widgetFormSelectHeight, this));
-        $('#dashboard-configure-widget-save').on('click', $.proxy(this.widgetSave, this));
+        $('#dashboard-configure-widget-save').on('click', $.proxy(this.widgetSaveForm, this));
 
         this.widgetFormHide();
     }
@@ -923,8 +971,8 @@ class DashboardConfigure {
     widgetDeleteConfirm(rowId, colId, widgetId)
     {
         this.widgetSetConfig(rowId, colId, widgetId, null);
-
         this.dashboardDisplayAll();
+        this.dashboardNeedSave('widget delete');
     }
 
     widgetMoveEventInit()
@@ -1039,6 +1087,7 @@ class DashboardConfigure {
 
                 this.dashboardContent.rows[rowKey].cols = cols;
                 this.dashboardDisplayAll();
+                this.dashboardNeedSave('widget move');
             }
         }
 
@@ -1068,6 +1117,12 @@ class DashboardConfigure {
         }
 
         this.dashboardContent.rows[rowKey].cols[colId].widgets[widgetId] = config;
+    }
+
+    widgetSaveForm()
+    {
+        this.widgetSave();
+        this.dashboardNeedSave('widget save');
     }
 
     widgetSave()
@@ -1154,6 +1209,7 @@ class DashboardConfigure {
         if (this.dashboardContent.rows.length < 1) {
             $('#dashboard-rows-empty').show();
         }
+        this.dashboardNeedSave('row delete');
     }
 
     rowClone(rowId)
@@ -1206,6 +1262,7 @@ class DashboardConfigure {
         currentRow.title += 'duplicated row';
         this.dashboardContent.rows.push(currentRow);
         this.dashboardDisplayAll();
+        this.dashboardNeedSave('row clone');
     }
 
     rowMoveEventInit()
@@ -1298,6 +1355,7 @@ class DashboardConfigure {
                     }
                     this.dashboardContent.rows = rows;
                     this.dashboardDisplayAll();
+                    this.dashboardNeedSave('row move');
                 }
             }
         }
@@ -1328,6 +1386,7 @@ class DashboardConfigure {
             },
             success: $.proxy(function (data) {
                 if (data.status === 'ok') {
+                    this.dashboardResetSave();
                     this.displayMessageSuccess(window.translator.trans('spipu.dashboard.flash_alert_message.success_saved'));
                 }
                 if (data.status === 'ko') {

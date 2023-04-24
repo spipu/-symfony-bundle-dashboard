@@ -8,14 +8,15 @@ spipu:
       duplicate: "Duplicate the dashboard"
       empty: "You did not yet configure your dashboard."
     label:
-      title_modal_delete_confirm: "Are you sure to delete this dashboard ?"
+      title_modal_delete_confirm: "Are you sure to delete this dashboard?"
       label_dashboard_name: "Dashboard name"
       source: "Source"
       type: "Type"
       period: "Period"
-      confirm_delete_row: "Do you really want to delete this row ?"
-      confirm_clone_row: "Do you really want to clone this row ?"
-      confirm_delete_widget: "Do you really want to delete this widget ?"
+      confirm_delete_row: "Do you really want to delete this row?"
+      confirm_clone_row: "Do you really want to clone this row?"
+      confirm_delete_widget: "Do you really want to delete this widget?"
+      confirm_ignore_save: "Do you really want to cancel your modifications?"
     configuration:
       period:
         title: "Period"
