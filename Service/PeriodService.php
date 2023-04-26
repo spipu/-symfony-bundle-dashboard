@@ -269,7 +269,7 @@ class PeriodService
         }
 
         // 7 days => 2 hours.
-        if ($interval < 7 * 24 * 3600) {
+        if ($interval < 7 * 24 * 3600 + 1) {
             return 3600 * 2;
         }
 
