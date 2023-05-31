@@ -14,7 +14,6 @@
         }
     ],
     "require": {
-        "php": "^7.4",
         "ext-pdo": "*",
         "symfony/framework-bundle": "^5.4",
         "spipu/ui-bundle": "^2.0"
