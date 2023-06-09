@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
-use Doctrine\DBAL\Exception as DbalException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -180,7 +179,7 @@ class DoctrineSql extends AbstractDataProvider
     protected function getSqlFieldName(string $field): string
     {
         $prefix = '';
-        if (strpos($field, '.') === false) {
+        if (!str_contains($field, '.')) {
             $prefix = 'main.';
         }
 

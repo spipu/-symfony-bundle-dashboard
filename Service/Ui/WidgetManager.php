@@ -70,7 +70,9 @@ class WidgetManager implements WidgetManagerInterface
     {
         $dataProvider = clone $this->container->get($this->definition->getSource()->getDataProviderServiceName());
         if (!($dataProvider instanceof DataProviderInterface)) {
-            throw new SourceException(printf('The Data Provider must implement %s', DataProviderInterface::class));
+            throw new SourceException(
+                sprintf('The Data Provider must implement %s', DataProviderInterface::class)
+            );
         }
 
         $dataProvider->setSourceRequest($this->request);
@@ -131,11 +133,7 @@ class WidgetManager implements WidgetManagerInterface
         return $this->urls[$code];
     }
 
-    /**
-     * @param int|float $value
-     * @return string
-     */
-    public function formatValue($value): string
+    public function formatValue(int|float $value): string
     {
         $nbDecimals = ($this->definition->getSource()->getType() === SourceDefinitionInterface::TYPE_FLOAT ? 2 : 0);
 

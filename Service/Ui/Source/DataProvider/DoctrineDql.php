@@ -162,7 +162,7 @@ class DoctrineDql extends AbstractDataProvider
     protected function getDqlFieldName(string $field): string
     {
         $prefix = '';
-        if (strpos($field, '.') === false) {
+        if (!str_contains($field, '.')) {
             $prefix = 'main.';
         }
 

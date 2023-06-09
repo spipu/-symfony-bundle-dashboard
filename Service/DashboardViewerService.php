@@ -17,7 +17,6 @@ use Spipu\DashboardBundle\Entity\Dashboard\Column;
 use Spipu\DashboardBundle\Entity\Dashboard\Row;
 use Spipu\DashboardBundle\Entity\Dashboard\Screen;
 use Spipu\DashboardBundle\Entity\DashboardInterface;
-use Spipu\DashboardBundle\Exception\PeriodException;
 use Spipu\DashboardBundle\Exception\WidgetException;
 
 class DashboardViewerService

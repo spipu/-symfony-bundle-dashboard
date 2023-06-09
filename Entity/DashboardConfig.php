@@ -16,47 +16,29 @@ namespace Spipu\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Spipu\UiBundle\Entity\TimestampableTrait;
 
-/**
- * @ORM\Table(
- *     name="spipu_dashboard_config",
- *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="UNIQ_DASHBOARD_CONFIG", columns={"user_identifier", "name"}),
- *     }
- * )
- * @ORM\Entity(repositoryClass=\Spipu\DashboardBundle\Repository\DashboardConfigRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: 'Spipu\DashboardBundle\Repository\DashboardConfigRepository')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "spipu_dashboard_config")]
+#[ORM\UniqueConstraint(name: "UNIQ_DASHBOARD_CONFIG", columns: ["user_identifier", "name"])]
 class DashboardConfig implements DashboardInterface
 {
     use TimestampableTrait;
 
     public const DEFAULT_NAME = 'default';
 
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    protected string $name;
+    #[ORM\Column(length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var array
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: "json", nullable: true)]
     protected array $content = [];
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $userIdentifier;
+    #[ORM\Column(length: 255)]
+    private ?string $userIdentifier = null;
 
     public function getId(): ?int
     {

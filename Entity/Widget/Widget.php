@@ -180,18 +180,11 @@ class Widget
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getGenerationTime(): int
     {
         return $this->generationTime;
     }
 
-    /**
-     * @param int $generationTime
-     * @return Widget
-     */
     public function setGenerationTime(int $generationTime): self
     {
         $this->generationTime = $generationTime;
@@ -199,9 +192,6 @@ class Widget
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isTooSlow(): bool
     {
         return ($this->generationTime > 100000);

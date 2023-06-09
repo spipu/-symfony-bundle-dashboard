@@ -34,7 +34,7 @@ class WidgetRequest extends AbstractRequest
         $this->definition = $definition;
     }
 
-    public function prepare()
+    public function prepare(): void
     {
         $this->setSessionPrefixKey('widget.' . $this->definition->getId());
         $this->prepareFilters();

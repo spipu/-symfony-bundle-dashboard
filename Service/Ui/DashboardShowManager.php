@@ -19,16 +19,12 @@ use Spipu\DashboardBundle\Entity\Dashboard\Screen;
 use Spipu\DashboardBundle\Entity\DashboardInterface;
 use Spipu\DashboardBundle\Entity\Widget\Widget;
 use Spipu\DashboardBundle\Exception\DashboardException;
-use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Service\DashboardViewerService;
 use Spipu\DashboardBundle\Service\PeriodService;
 use Spipu\DashboardBundle\Service\Ui\Dashboard\DashboardRequest;
 use Spipu\DashboardBundle\Service\Ui\Definition\DashboardDefinitionInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment as Twig;
-use Twig\Error\LoaderError;
-use Twig\Error\RuntimeError;
-use Twig\Error\SyntaxError;
 
 /**
  * @SuppressWarnings(PMD.CouplingBetweenObjects)

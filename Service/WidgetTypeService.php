@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service;
 
 use Spipu\DashboardBundle\Entity\Source\Source;
-use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Exception\TypeException;
 use Spipu\DashboardBundle\Service\Ui\SourceManager;
 use Spipu\DashboardBundle\Service\Ui\WidgetManager;
