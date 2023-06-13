@@ -17,7 +17,7 @@
         "php": "^8.1",
         "ext-pdo": "*",
         "symfony/framework-bundle": "^5.4",
-        "spipu/ui-bundle": "^2.0"
+        "spipu/ui-bundle": "^3.0"
     },
     "autoload": {
         "psr-4": {
