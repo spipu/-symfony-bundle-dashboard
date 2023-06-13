@@ -28,9 +28,6 @@ class PeriodService
     public const PERIOD_MONTH = 'month';
     public const PERIOD_YEAR = 'year';
 
-    /**
-     * @var string[]
-     */
     protected array $types = [
         self::PERIOD_HOUR,
         self::PERIOD_DAY_CURRENT,
@@ -40,14 +37,8 @@ class PeriodService
         self::PERIOD_YEAR,
     ];
 
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -61,9 +52,6 @@ class PeriodService
         return $this->types;
     }
 
-    /**
-     * @return string[]
-     */
     public function getDefinitions(): array
     {
         $definition = [];
@@ -78,13 +66,6 @@ class PeriodService
         return $definition;
     }
 
-    /**
-     * @param string $type
-     * @param DateTime|null $dateFrom
-     * @param DateTime|null $dateTo
-     * @return Period
-     * @throws PeriodException
-     */
     public function create(string $type, ?DateTime $dateFrom = null, ?DateTime $dateTo = null): Period
     {
         $period = new Period();
@@ -120,11 +101,6 @@ class PeriodService
         throw new PeriodException('unknown period type code');
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodYear(Period $period): Period
     {
         $time = time();
@@ -137,11 +113,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodMonth(Period $period): Period
     {
         $time = time();
@@ -154,11 +125,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodWeek(Period $period): Period
     {
         $time = time();
@@ -171,11 +137,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodDayFull(Period $period): Period
     {
         $time = time();
@@ -188,11 +149,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodDayCurrent(Period $period): Period
     {
         $time = time();
@@ -205,11 +161,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @return Period
-     * @throws Exception
-     */
     private function preparePeriodHour(Period $period): Period
     {
         $time = time();
@@ -222,12 +173,6 @@ class PeriodService
         return $period;
     }
 
-    /**
-     * @param Period $period
-     * @param DateTime $dateFrom
-     * @param DateTime $dateTo
-     * @return Period
-     */
     private function preparePeriodCustom(Period $period, DateTime $dateFrom, DateTime $dateTo): Period
     {
         if ($dateFrom > $dateTo) {

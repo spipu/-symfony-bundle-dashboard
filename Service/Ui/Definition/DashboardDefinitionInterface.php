@@ -17,13 +17,7 @@ use Spipu\DashboardBundle\Entity\Dashboard\Dashboard as DashboardDefinition;
 
 interface DashboardDefinitionInterface
 {
-    /**
-     * @return DashboardDefinition
-     */
     public function getDefinition(): DashboardDefinition;
 
-    /**
-     * @return array
-     */
     public function getDefaultConfig(): array;
 }

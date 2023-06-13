@@ -16,68 +16,40 @@ namespace Spipu\DashboardBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Spipu\UiBundle\Entity\TimestampableTrait;
 
-/**
- * @ORM\Table(
- *     name="spipu_dashboard_config",
- *     uniqueConstraints={
- *          @ORM\UniqueConstraint(name="UNIQ_DASHBOARD_CONFIG", columns={"user_identifier", "name"}),
- *     }
- * )
- * @ORM\Entity(repositoryClass=\Spipu\DashboardBundle\Repository\DashboardConfigRepository::class)
- * @ORM\HasLifecycleCallbacks()
- */
+#[ORM\Entity(repositoryClass: 'Spipu\DashboardBundle\Repository\DashboardConfigRepository')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: "spipu_dashboard_config")]
+#[ORM\UniqueConstraint(name: "UNIQ_DASHBOARD_CONFIG", columns: ["user_identifier", "name"])]
 class DashboardConfig implements DashboardInterface
 {
     use TimestampableTrait;
 
     public const DEFAULT_NAME = 'default';
 
-    /**
-     * @var int
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    protected int $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    protected ?int $id = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    protected string $name;
+    #[ORM\Column(length: 255)]
+    protected ?string $name = null;
 
-    /**
-     * @var array
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: "json", nullable: true)]
     protected array $content = [];
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $userIdentifier;
+    #[ORM\Column(length: 255)]
+    private ?string $userIdentifier = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     */
     public function setName(string $name): self
     {
         $name = trim(strip_tags($name));
@@ -87,28 +59,18 @@ class DashboardConfig implements DashboardInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         return $this->userIdentifier;
     }
 
-    /**
-     * @param string $userIdentifier
-     * @return DashboardConfig
-     */
-    public function setUserIdentifier(string $userIdentifier): DashboardConfig
+    public function setUserIdentifier(string $userIdentifier): self
     {
         $this->userIdentifier = $userIdentifier;
 
         return $this;
     }
 
-    /**
-     * @return array
-     */
     public function getContent(): array
     {
         $content = $this->content;
@@ -120,10 +82,6 @@ class DashboardConfig implements DashboardInterface
         return $content;
     }
 
-    /**
-     * @param array|null $content
-     * @return $this
-     */
     public function setContent(?array $content): self
     {
         $this->content = $content;
@@ -131,9 +89,6 @@ class DashboardConfig implements DashboardInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isDefault(): bool
     {
         return $this->name === self::DEFAULT_NAME;

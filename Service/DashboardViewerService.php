@@ -17,29 +17,18 @@ use Spipu\DashboardBundle\Entity\Dashboard\Column;
 use Spipu\DashboardBundle\Entity\Dashboard\Row;
 use Spipu\DashboardBundle\Entity\Dashboard\Screen;
 use Spipu\DashboardBundle\Entity\DashboardInterface;
-use Spipu\DashboardBundle\Exception\PeriodException;
 use Spipu\DashboardBundle\Exception\WidgetException;
 
 class DashboardViewerService
 {
-    /**
-     * @var WidgetService
-     */
     private WidgetService $widgetService;
 
-    /**
-     * @param WidgetService $widgetService
-     */
     public function __construct(
         WidgetService $widgetService
     ) {
         $this->widgetService = $widgetService;
     }
 
-    /**
-     * @param DashboardInterface $dashboard
-     * @return Screen
-     */
     public function buildScreen(DashboardInterface $dashboard): Screen
     {
         $definition = $dashboard->getContent();
@@ -56,12 +45,6 @@ class DashboardViewerService
         return $screen;
     }
 
-    /**
-     * @param Screen $screen
-     * @param array $definitionRow
-     * @return void
-     * @throws PeriodException
-     */
     private function buildRow(Screen $screen, array $definitionRow): void
     {
         $row = $screen->addRow(
@@ -74,12 +57,6 @@ class DashboardViewerService
         }
     }
 
-    /**
-     * @param Row $row
-     * @param array $widgets
-     * @return void
-     * @throws PeriodException
-     */
     private function buildCol(Row $row, array $widgets): void
     {
         $width = $widgets[0]['width'] ?? 0;
@@ -89,12 +66,6 @@ class DashboardViewerService
         }
     }
 
-    /**
-     * @param Column $col
-     * @param array $definitionWidget
-     * @return void
-     * @throws PeriodException
-     */
     private function buildWidget(Column $col, array $definitionWidget): void
     {
         $widget = $this->widgetService->buildWidget($definitionWidget);

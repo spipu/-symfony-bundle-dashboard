@@ -15,9 +15,6 @@ namespace Spipu\DashboardBundle\Service\Ui;
 
 class DashboardRouter
 {
-    /**
-     * @var string[]
-     */
     private array $urls = [
         'main'           => '',
         'reset'          => '',
@@ -28,11 +25,6 @@ class DashboardRouter
         'refresh_widget' => '',
     ];
 
-    /**
-     * @param string $code
-     * @param string $url
-     * @return $this
-     */
     public function setUrl(string $code, string $url): self
     {
         $this->urls[$code] = $url;
@@ -40,18 +32,11 @@ class DashboardRouter
         return $this;
     }
 
-    /**
-     * @param string $code
-     * @return string|null
-     */
     public function getUrl(string $code): ?string
     {
         return $this->urls[$code] ?? null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getResetUrl(): ?string
     {
         if (!$this->getUrl('reset')) {

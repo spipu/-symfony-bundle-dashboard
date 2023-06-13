@@ -19,12 +19,6 @@ use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
 
 class SourceManager
 {
-    /**
-     * @param Source $source
-     * @param float $value
-     * @return string
-     * @throws SourceException
-     */
     public function convertValue(Source $source, float $value): string
     {
         switch ($source->getType()) {

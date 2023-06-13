@@ -14,25 +14,13 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service;
 
 use Spipu\DashboardBundle\Entity\Widget\Widget;
-use Spipu\DashboardBundle\Exception\PeriodException;
 use Spipu\DashboardBundle\Exception\SourceException;
 
 class WidgetService
 {
-    /**
-     * @var SourceList
-     */
     private SourceList $sourceList;
-
-    /**
-     * @var PeriodService
-     */
     private PeriodService $periodService;
 
-    /**
-     * @param SourceList $sourceList
-     * @param PeriodService $periodService
-     */
     public function __construct(
         SourceList $sourceList,
         PeriodService $periodService
@@ -41,11 +29,6 @@ class WidgetService
         $this->periodService = $periodService;
     }
 
-    /**
-     * @param array $definitionWidget
-     * @return Widget|null
-     * @throws PeriodException
-     */
     public function buildWidget(array $definitionWidget): ?Widget
     {
         $id = (string)$definitionWidget['id'];

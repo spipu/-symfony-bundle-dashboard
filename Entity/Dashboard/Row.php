@@ -15,24 +15,9 @@ namespace Spipu\DashboardBundle\Entity\Dashboard;
 
 class Row
 {
-    /**
-     * @var Screen
-     */
     private Screen $screen;
-
-    /**
-     * @var int
-     */
     private int $id;
-
-    /**
-     * @var string
-     */
     private string $title;
-
-    /**
-     * @var int
-     */
     private int $nbCols;
 
     /**
@@ -40,12 +25,6 @@ class Row
      */
     private array $cols = [];
 
-    /**
-     * @param Screen $screen
-     * @param int $id
-     * @param string $title
-     * @param int $nbCols
-     */
     public function __construct(Screen $screen, int $id, string $title, int $nbCols)
     {
         $this->id = $id;
@@ -54,9 +33,6 @@ class Row
         $this->nbCols = $nbCols;
     }
 
-    /**
-     * @return Screen
-     */
     public function getScreen(): Screen
     {
         return $this->screen;
@@ -78,10 +54,6 @@ class Row
         return $this->cols;
     }
 
-    /**
-     * @param int $width
-     * @return Column
-     */
     public function addCol(int $width): Column
     {
         $col = new Column($this, count($this->cols) + 1, $width);
@@ -91,17 +63,11 @@ class Row
         return $col;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return int
-     */
     public function getNbCols(): int
     {
         return $this->nbCols;

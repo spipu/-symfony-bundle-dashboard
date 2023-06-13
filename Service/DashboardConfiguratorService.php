@@ -24,26 +24,10 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class DashboardConfiguratorService
 {
-    /**
-     * @var SourceList
-     */
     private SourceList $sourceList;
-
-    /**
-     * @var PeriodService
-     */
     private PeriodService $periodService;
-
-    /**
-     * @var WidgetTypeService
-     */
     private WidgetTypeService $widgetTypeService;
 
-    /**
-     * @param SourceList $sourceList
-     * @param PeriodService $periodService
-     * @param WidgetTypeService $widgetTypeService
-     */
     public function __construct(
         SourceList $sourceList,
         PeriodService $periodService,
@@ -54,11 +38,6 @@ class DashboardConfiguratorService
         $this->widgetTypeService = $widgetTypeService;
     }
 
-    /**
-     * @param Request $request
-     * @return array
-     * @throws WidgetException
-     */
     public function validateAndPrepareConfigurations(Request $request): array
     {
         $requestData = $request->request->get('configurations');
@@ -83,11 +62,6 @@ class DashboardConfiguratorService
         return $configurations;
     }
 
-    /**
-     * @param array $confRow
-     * @return void
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataRow(array &$confRow): void
     {
         unset($confRow['id'], $confRow['width']);
@@ -112,11 +86,6 @@ class DashboardConfiguratorService
         }
     }
 
-    /**
-     * @param array $confCol
-     * @return void
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataCol(array &$confCol): void
     {
         unset($confCol['id']);
@@ -131,11 +100,6 @@ class DashboardConfiguratorService
         }
     }
 
-    /**
-     * @param array $confWidget
-     * @return void
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataWidget(array $confWidget): void
     {
         if (!array_key_exists('width', $confWidget) || !is_int($confWidget['width']) || $confWidget['width'] > 4) {
@@ -153,11 +117,6 @@ class DashboardConfiguratorService
         $this->checkConfigurationsDataWidgetCoherency($source, $type, $period, $confWidget);
     }
 
-    /**
-     * @param array $confWidget
-     * @return SourceDefinitionInterface
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataWidgetSource(array $confWidget): SourceDefinitionInterface
     {
         if (!array_key_exists('source', $confWidget) || !is_string($confWidget['source'])) {
@@ -177,11 +136,6 @@ class DashboardConfiguratorService
         return $source;
     }
 
-    /**
-     * @param array $confWidget
-     * @return array
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataWidgetType(array $confWidget): array
     {
         if (!array_key_exists('type', $confWidget) || !is_string($confWidget['type'])) {
@@ -201,11 +155,6 @@ class DashboardConfiguratorService
         return $type;
     }
 
-    /**
-     * @param array $confWidget
-     * @return string|null
-     * @throws WidgetException
-     */
     private function checkConfigurationsDataWidgetPeriod(array $confWidget): ?string
     {
         if (!array_key_exists('period', $confWidget)) {
@@ -223,14 +172,6 @@ class DashboardConfiguratorService
         return $confWidget['period'];
     }
 
-    /**
-     * @param SourceDefinitionInterface $source
-     * @param array $type
-     * @param string|null $period
-     * @param array $confWidget
-     * @return void
-     * @throws WidgetException
-     */
     protected function checkConfigurationsDataWidgetCoherency(
         SourceDefinitionInterface $source,
         array $type,
@@ -250,11 +191,6 @@ class DashboardConfiguratorService
         }
     }
 
-    /**
-     * @param string $message
-     * @param array|null $configuration
-     * @return WidgetException
-     */
     private function createException(string $message, ?array $configuration = null): WidgetException
     {
         if ($configuration) {

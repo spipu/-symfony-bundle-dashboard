@@ -17,45 +17,16 @@ use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
 
 abstract class Source
 {
-    /**
-     * @var string
-     */
     private string $code;
-
-    /**
-     * @var string|null
-     */
     private ?string $entityName;
-
-    /**
-     * @var string
-     */
     private string $dataProviderServiceName;
-
-    /**
-     * @var string
-     */
     private string $type = SourceDefinitionInterface::TYPE_INT;
-
-    /**
-     * @var string
-     */
     private string $suffix = '';
-
-    /**
-     * @var string|null
-     */
     private ?string $dateField;
-
-    /**
-     * @var string
-     */
     private string $valueExpression;
-
-    /**
-     * @var bool
-     */
     private bool $lowerBetter = false;
+    private ?string $specificDisplayIcon = null;
+    private ?string $specificDisplayTemplate = null;
 
     /**
      * @var string[]
@@ -67,46 +38,22 @@ abstract class Source
      */
     private array $filters = [];
 
-    /**
-     * @var string|null
-     */
-    private ?string $specificDisplayIcon = null;
-
-    /**
-     * @var string|null
-     */
-    private ?string $specificDisplayTemplate = null;
-
-    /**
-     * @param string $code
-     * @param string|null $entityName
-     */
     public function __construct(string $code, ?string $entityName = null)
     {
         $this->code = $code;
         $this->entityName = $entityName;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEntityName(): ?string
     {
         return $this->entityName;
     }
 
-    /**
-     * @param string|null $entityName
-     * @return self
-     */
     public function setEntityName(?string $entityName): self
     {
         $this->entityName = $entityName;
@@ -114,18 +61,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getDataProviderServiceName(): string
     {
         return $this->dataProviderServiceName;
     }
 
-    /**
-     * @param string $dataProviderServiceName
-     * @return $this
-     */
     protected function setDataProviderServiceName(string $dataProviderServiceName): self
     {
         $this->dataProviderServiceName = $dataProviderServiceName;
@@ -133,18 +73,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param string $type
-     * @return $this
-     */
     public function setType(string $type): self
     {
         $this->type = $type;
@@ -152,18 +85,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSuffix(): string
     {
         return $this->suffix;
     }
 
-    /**
-     * @param string $suffix
-     * @return $this
-     */
     public function setSuffix(string $suffix): self
     {
         $this->suffix = $suffix;
@@ -171,18 +97,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDateField(): ?string
     {
         return $this->dateField;
     }
 
-    /**
-     * @param string|null $dateField
-     * @return $this
-     */
     public function setDateField(?string $dateField): self
     {
         $this->dateField = $dateField;
@@ -190,18 +109,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getValueExpression(): string
     {
         return $this->valueExpression;
     }
 
-    /**
-     * @param string $valueExpression
-     * @return $this
-     */
     public function setValueExpression(string $valueExpression): self
     {
         $this->valueExpression = $valueExpression;
@@ -209,18 +121,11 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isLowerBetter(): bool
     {
         return $this->lowerBetter;
     }
 
-    /**
-     * @param bool $lowerBetter
-     * @return $this
-     */
     public function setLowerBetter(bool $lowerBetter): self
     {
         $this->lowerBetter = $lowerBetter;
@@ -237,7 +142,7 @@ abstract class Source
     }
 
     /**
-     * @param array $conditions
+     * @param string[] $conditions
      * @return $this
      */
     public function setConditions(array $conditions): self
@@ -247,10 +152,6 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @param string $condition
-     * @return $this
-     */
     public function addCondition(string $condition): self
     {
         $this->conditions[] = $condition;
@@ -266,10 +167,6 @@ abstract class Source
         return $this->filters;
     }
 
-    /**
-     * @param SourceFilter $filter
-     * @return $this
-     */
     public function addFilter(SourceFilter $filter): self
     {
         $this->filters[$filter->getCode()] = $filter;
@@ -277,10 +174,6 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @param string $code
-     * @return $this
-     */
     public function removeFilter(string $code): self
     {
         if (array_key_exists($code, $this->filters)) {
@@ -290,28 +183,16 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasFilters(): bool
     {
         return !empty($this->filters);
     }
 
-    /**
-     * @param string $code
-     * @return SourceFilter|null
-     */
     public function getFilter(string $code): ?SourceFilter
     {
         return $this->filters[$code] ?? null;
     }
 
-    /**
-     * @param string $icon
-     * @param string $template
-     * @return $this
-     */
     public function setSpecificDisplay(string $icon, string $template): self
     {
         $this->specificDisplayIcon = $icon;
@@ -320,33 +201,21 @@ abstract class Source
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function hasSpecificDisplay(): bool
     {
         return $this->specificDisplayIcon !== null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSpecificDisplayIcon(): ?string
     {
         return $this->specificDisplayIcon;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSpecificDisplayTemplate(): ?string
     {
         return $this->specificDisplayTemplate;
     }
 
-    /**
-     * @return bool
-     */
     public function needPeriod(): bool
     {
         return (!$this->hasSpecificDisplay()) && ($this->getDateField() !== null);

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service;
 
 use Spipu\DashboardBundle\Entity\Source\Source;
-use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Exception\TypeException;
 use Spipu\DashboardBundle\Service\Ui\SourceManager;
 use Spipu\DashboardBundle\Service\Ui\WidgetManager;
@@ -27,9 +26,6 @@ class WidgetTypeService
     public const TYPE_GRAPH = 'graph';
     public const TYPE_SPECIFIC = 'specific';
 
-    /**
-     * @var string[]
-     */
     private array $types = [
         self::TYPE_VALUE_SINGLE,
         self::TYPE_VALUE_COMPARE,
@@ -37,28 +33,14 @@ class WidgetTypeService
         self::TYPE_SPECIFIC,
     ];
 
-    /**
-     * @var string[]
-     */
     private array $typesWithoutPeriod = [
         self::TYPE_VALUE_SINGLE,
         self::TYPE_SPECIFIC,
     ];
 
-    /**
-     * @var SourceManager
-     */
     private SourceManager $sourceManager;
-
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
 
-    /**
-     * @param SourceManager $sourceManager
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         SourceManager $sourceManager,
         TranslatorInterface $translator
@@ -75,10 +57,6 @@ class WidgetTypeService
         return $this->types;
     }
 
-    /**
-     * @return array[]
-     * @throws TypeException
-     */
     public function getDefinitions(): array
     {
         $definition = [];
@@ -90,11 +68,6 @@ class WidgetTypeService
         return $definition;
     }
 
-    /**
-     * @param string $type
-     * @return array
-     * @throws TypeException
-     */
     public function getDefinition(string $type): array
     {
         if (!in_array($type, $this->types)) {
@@ -109,10 +82,6 @@ class WidgetTypeService
         ];
     }
 
-    /**
-     * @param string $type
-     * @return int
-     */
     public function getHeight(string $type): int
     {
         if (in_array($type, [self::TYPE_VALUE_SINGLE, self::TYPE_VALUE_COMPARE])) {
@@ -122,12 +91,6 @@ class WidgetTypeService
         return 2;
     }
 
-    /**
-     * @param WidgetManager $widgetManager
-     * @return void
-     * @throws SourceException
-     * @throws TypeException
-     */
     public function initValues(WidgetManager $widgetManager): void
     {
         $widget = $widgetManager->getDefinition();
@@ -155,11 +118,6 @@ class WidgetTypeService
         $widget->setGenerationTime((int) (1000000. * (microtime(true) - $startTime)));
     }
 
-    /**
-     * @param WidgetManager $widgetManager
-     * @return array
-     * @throws SourceException
-     */
     private function getValuesTypeValueSingle(WidgetManager $widgetManager): array
     {
         return [
@@ -170,11 +128,6 @@ class WidgetTypeService
         ];
     }
 
-    /**
-     * @param WidgetManager $widgetManager
-     * @return array
-     * @throws SourceException
-     */
     private function getValuesTypeValueCompare(WidgetManager $widgetManager): array
     {
         return [
@@ -189,10 +142,6 @@ class WidgetTypeService
         ];
     }
 
-    /**
-     * @param WidgetManager $widgetManager
-     * @return array
-     */
     private function getValuesTypeValues(WidgetManager $widgetManager): array
     {
         $values = $widgetManager->getDataProvider()->getValues();
@@ -207,19 +156,11 @@ class WidgetTypeService
         return $values;
     }
 
-    /**
-     * @param WidgetManager $widgetManager
-     * @return array
-     */
     private function getValuesTypeSpecific(WidgetManager $widgetManager): array
     {
         return $widgetManager->getDataProvider()->getSpecificValues();
     }
 
-    /**
-     * @param Source $source
-     * @return array
-     */
     public function getAvailableWidgetTypes(Source $source): array
     {
         return $source->getDateField() === null ? $this->typesWithoutPeriod : $this->types;

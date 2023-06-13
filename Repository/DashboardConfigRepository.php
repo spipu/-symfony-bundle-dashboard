@@ -25,9 +25,6 @@ use Spipu\DashboardBundle\Entity\DashboardConfig;
  */
 class DashboardConfigRepository extends ServiceEntityRepository
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, DashboardConfig::class);
@@ -35,7 +32,7 @@ class DashboardConfigRepository extends ServiceEntityRepository
 
     /**
      * @param string $userIdentifier
-     * @return array|DashboardConfig[]
+     * @return DashboardConfig[]
      */
     public function getUserConfigs(string $userIdentifier): array
     {
@@ -45,11 +42,6 @@ class DashboardConfigRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * @param string $userIdentifier
-     * @param int $gridConfigId
-     * @return DashboardConfig|null
-     */
     public function getUserConfigById(string $userIdentifier, int $gridConfigId): ?DashboardConfig
     {
         return $this->findOneBy(
@@ -60,11 +52,6 @@ class DashboardConfigRepository extends ServiceEntityRepository
         );
     }
 
-    /**
-     * @param string $userIdentifier
-     * @param string $name
-     * @return DashboardConfig|null
-     */
     public function getUserConfigByName(string $userIdentifier, string $name): ?DashboardConfig
     {
         return $this->findOneBy(

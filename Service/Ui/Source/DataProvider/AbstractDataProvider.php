@@ -13,64 +13,35 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
-use DateTimeInterface;
 use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
 use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 
 abstract class AbstractDataProvider implements DataProviderInterface
 {
-    /**
-     * @var WidgetRequest
-     */
     protected WidgetRequest $request;
-
-    /**
-     * @var SourceDefinition
-     */
     protected SourceDefinition $definition;
-
-    /**
-     * @var array|null
-     */
     private ?array $filters = null;
 
-    /**
-     * @return WidgetRequest
-     */
     public function getRequest(): WidgetRequest
     {
         return $this->request;
     }
 
-    /**
-     * @param WidgetRequest $request
-     * @return void
-     */
     public function setSourceRequest(WidgetRequest $request): void
     {
         $this->request = $request;
     }
 
-    /**
-     * @return SourceDefinition
-     */
     public function getDefinition(): SourceDefinition
     {
         return $this->definition;
     }
 
-    /**
-     * @param SourceDefinition $definition
-     * @return void
-     */
     public function setSourceDefinition(SourceDefinition $definition): void
     {
         $this->definition = $definition;
     }
 
-    /**
-     * @return array
-     */
     public function getFilters(): array
     {
         if (is_array($this->filters)) {
@@ -80,9 +51,6 @@ abstract class AbstractDataProvider implements DataProviderInterface
         return $this->request->getFilters();
     }
 
-    /**
-     * @return DateTimeInterface[]
-     */
     protected function getPreviousPeriodDate(): array
     {
         $currentFrom = $this->request->getPeriod()->getDateFrom();
@@ -93,9 +61,6 @@ abstract class AbstractDataProvider implements DataProviderInterface
         return array($dateFrom, $dateTo);
     }
 
-    /**
-     * @return array
-     */
     public function getSpecificValues(): array
     {
         return [];
