@@ -165,7 +165,7 @@ class DashboardConfiguratorService
             throw $this->createException('widget - bad period', $confWidget);
         }
 
-        if ($confWidget['period'] && !in_array($confWidget['period'], $this->periodService->getTypes())) {
+        if ($confWidget['period'] && !in_array($confWidget['period'], $this->periodService->getTypes(), true)) {
             throw $this->createException('widget - bad period', $confWidget);
         }
 

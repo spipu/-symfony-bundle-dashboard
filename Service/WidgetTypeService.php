@@ -70,7 +70,7 @@ class WidgetTypeService
 
     public function getDefinition(string $type): array
     {
-        if (!in_array($type, $this->types)) {
+        if (!in_array($type, $this->types, true)) {
             throw new TypeException('Unknown type');
         }
 
@@ -78,13 +78,13 @@ class WidgetTypeService
             'code' => $type,
             'label' => $this->translator->trans('spipu.dashboard.type.' . $type),
             'height' => $this->getHeight($type),
-            'needPeriod' => !in_array($type, $this->typesWithoutPeriod),
+            'needPeriod' => !in_array($type, $this->typesWithoutPeriod, true),
         ];
     }
 
     public function getHeight(string $type): int
     {
-        if (in_array($type, [self::TYPE_VALUE_SINGLE, self::TYPE_VALUE_COMPARE])) {
+        if (in_array($type, [self::TYPE_VALUE_SINGLE, self::TYPE_VALUE_COMPARE], true)) {
             return 1;
         }
 
@@ -94,7 +94,7 @@ class WidgetTypeService
     public function initValues(WidgetManager $widgetManager): void
     {
         $widget = $widgetManager->getDefinition();
-        if (!in_array($widget->getType(), $this->getAvailableWidgetTypes($widget->getSource()))) {
+        if (!in_array($widget->getType(), $this->getAvailableWidgetTypes($widget->getSource()), true)) {
             throw new TypeException('this type is not allowed');
         }
 

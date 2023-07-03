@@ -69,7 +69,7 @@ class SourceFilter
 
     public function isSelected($inputValue, $value): bool
     {
-        if (is_array($inputValue) && in_array($value, $inputValue)) {
+        if (is_array($inputValue) && in_array($value, $inputValue, true)) {
             return true;
         }
         if (is_string($inputValue) && $inputValue === $value) {
