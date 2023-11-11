@@ -16,6 +16,8 @@ namespace Spipu\DashboardBundle\Service;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Spipu\DashboardBundle\Entity\DashboardAcl;
+use Spipu\DashboardBundle\Exception\DashboardAclException;
 use Spipu\DashboardBundle\Exception\PeriodException;
 use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Exception\TypeException;
@@ -30,13 +32,15 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Throwable;
 
 /**
- * @SuppressWarnings(PMD.CouplingBetweenObjects)
  * @SuppressWarnings(PMD.ExcessiveParameterList)
+ * @SuppressWarnings(PMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PMD.ExcessiveClassComplexity)
  */
 class DashboardControllerService extends AbstractController
 {
@@ -101,6 +105,11 @@ class DashboardControllerService extends AbstractController
     private DashboardDefinitionInterface $dashboardDefinition;
 
     /**
+     * @var DashboardAcl
+     */
+    private DashboardAcl $dashboardAcl;
+
+    /**
      * @param TranslatorInterface $translator
      * @param DashboardService $dashboardService
      * @param WidgetService $widgetService
@@ -144,6 +153,7 @@ class DashboardControllerService extends AbstractController
      * @param string $routeName
      * @param string $action
      * @param int|null $id
+     * @param DashboardAcl|null $dashboardAcl
      * @return Response
      * @throws PeriodException
      * @throws SourceException
@@ -155,43 +165,52 @@ class DashboardControllerService extends AbstractController
         DashboardDefinitionInterface $dashboardDefinition,
         string $routeName,
         string $action,
-        ?int $id = null
+        ?int $id = null,
+        ?DashboardAcl $dashboardAcl = null
     ): Response {
         $this->dashboardDefinition = $dashboardDefinition;
         $this->dashboardDefinition->getDefinition()->setRoute($routeName);
 
+        $this->setDashboardAcl($dashboardAcl);
+        $user = $this->getDashboardUser();
+        $id = $this->getDashboardAllowedId($user, $id);
+
         switch ($action) {
             case 'create':
-                return $this->actionCreate();
+                return $this->actionCreate($user);
 
             case 'configure':
-                return $this->actionConfigure($id);
+                return $this->actionConfigure($user, $id);
 
             case 'delete':
-                return $this->actionDelete($id);
+                return $this->actionDelete($user, $id);
 
             case 'duplicate':
-                return $this->actionDuplicate($id);
+                return $this->actionDuplicate($user, $id);
 
             case 'save':
-                return $this->actionSave($id);
+                return $this->actionSave($user, $id);
 
             case '':
             case 'show':
-                return $this->actionShow($id);
+                return $this->actionShow($user, $id);
 
             case 'refresh_widget':
-                return $this->actionRefreshWidget($id);
+                return $this->actionRefreshWidget($user, $id);
         }
 
         throw $this->createNotFoundException('Unknown action');
     }
 
     /**
+     * @param UserInterface $user
      * @return RedirectResponse
      */
-    protected function actionCreate(): RedirectResponse
+    protected function actionCreate(UserInterface $user): RedirectResponse
     {
+        if (!$this->dashboardAcl->isCanCreate()) {
+            throw $this->createAccessDeniedException('Action Create is not allowed');
+        }
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $dashboardName = trim(strip_tags((string) $this->requestStack->getCurrentRequest()->get('dashboard_name')));
@@ -201,7 +220,7 @@ class DashboardControllerService extends AbstractController
         }
 
         try {
-            $dashboard = $this->dashboardService->createDashboard($this->getUser(), $dashboardName);
+            $dashboard = $this->dashboardService->createDashboard($user, $dashboardName);
         } catch (UniqueConstraintViolationException $e) {
             $this->addFlashTrans('danger', 'spipu.dashboard.error.name_already_used');
             return $this->redirect($this->buildUrl('show'));
@@ -211,19 +230,24 @@ class DashboardControllerService extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
      * @param int|null $id
      * @return Response
      * @throws TypeException
      */
-    protected function actionConfigure(?int $id): Response
+    protected function actionConfigure(UserInterface $user, ?int $id): Response
     {
+        if (!$this->dashboardAcl->isCanConfigure()) {
+            throw $this->createAccessDeniedException('Action Configure is not allowed');
+        }
+
         if ($id === null) {
             throw $this->createNotFoundException('Id is required');
         }
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id);
+        $dashboard = $this->dashboardService->getDashboard($user, $id);
         if ($dashboard === null) {
             throw $this->createNotFoundException('Unknown dashboard');
         }
@@ -231,37 +255,43 @@ class DashboardControllerService extends AbstractController
         return $this->render(
             $this->dashboardDefinition->getDefinition()->getTemplateConfigureMain(),
             [
-                'definition' => $this->dashboardDefinition->getDefinition(),
-                'dashboard'  => $dashboard,
-                'sources'    => $this->sourceList->getDefinitions(),
-                'periods'    => $this->periodService->getDefinitions(),
-                'types'      => $this->widgetTypeService->getDefinitions(),
-                'save_url'   => $this->buildUrl('save', $id),
-                'delete_url' => $this->buildUrl('delete', $id),
-                'back_url'   => $this->buildUrl('show', $id),
+                'definition'    => $this->dashboardDefinition->getDefinition(),
+                'dashboard'     => $dashboard,
+                'dashboard_acl' => $this->dashboardAcl,
+                'sources'       => $this->sourceList->getDefinitions(),
+                'periods'       => $this->periodService->getDefinitions(),
+                'types'         => $this->widgetTypeService->getDefinitions(),
+                'save_url'      => $this->buildUrl('save', $id),
+                'delete_url'    => $this->buildUrl('delete', $id),
+                'back_url'      => $this->buildUrl('show', $id),
             ]
         );
     }
 
     /**
+     * @param UserInterface $user
      * @param int|null $id
      * @return Response
      */
-    protected function actionDelete(?int $id): Response
+    protected function actionDelete(UserInterface $user, ?int $id): Response
     {
+        if (!$this->dashboardAcl->isCanDelete()) {
+            throw $this->createAccessDeniedException('Action Delete is not allowed');
+        }
+
         if ($id === null) {
             throw $this->createNotFoundException('Id is required');
         }
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id);
+        $dashboard = $this->dashboardService->getDashboard($user, $id);
         if ($dashboard === null) {
             throw $this->createNotFoundException('Unknown dashboard');
         }
 
         try {
-            $this->dashboardService->deleteDashboard($dashboard, $this->getUser());
+            $this->dashboardService->deleteDashboard($dashboard, $user);
         } catch (AccessDeniedException $e) {
             $this->addFlashTrans('danger', $e->getMessage());
         }
@@ -270,18 +300,23 @@ class DashboardControllerService extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
      * @param int|null $id
      * @return Response
      */
-    protected function actionDuplicate(?int $id): Response
+    protected function actionDuplicate(UserInterface $user, ?int $id): Response
     {
+        if (!$this->dashboardAcl->isCanCreate()) {
+            throw $this->createAccessDeniedException('Action Create is not allowed');
+        }
+
         if ($id === null) {
             throw $this->createNotFoundException('Id is required');
         }
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id);
+        $dashboard = $this->dashboardService->getDashboard($user, $id);
         if ($dashboard === null) {
             throw new NotFoundHttpException('Unknown dashboard');
         }
@@ -293,7 +328,7 @@ class DashboardControllerService extends AbstractController
         }
 
         try {
-            $dashboard = $this->dashboardService->duplicateDashboard($dashboard, $this->getUser(), $dashboardName);
+            $dashboard = $this->dashboardService->duplicateDashboard($dashboard, $user, $dashboardName);
         } catch (UniqueConstraintViolationException $e) {
             $this->addFlashTrans('danger', 'spipu.dashboard.error.name_already_used');
             return $this->redirect($this->buildUrl('show', $id));
@@ -303,11 +338,16 @@ class DashboardControllerService extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
      * @param int|null $id
      * @return Response
      */
-    protected function actionSave(?int $id): Response
+    protected function actionSave(UserInterface $user, ?int $id): Response
     {
+        if (!$this->dashboardAcl->isCanConfigure()) {
+            throw $this->createAccessDeniedException('Action Configure is not allowed');
+        }
+
         if ($id === null) {
             throw $this->createNotFoundException('Id is required');
         }
@@ -319,12 +359,12 @@ class DashboardControllerService extends AbstractController
                 $this->requestStack->getCurrentRequest()
             );
 
-            $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id);
+            $dashboard = $this->dashboardService->getDashboard($user, $id);
             if ($dashboard === null) {
                 return new JsonResponse(['status' => 'ko', 'message' => 'Unknown dashboard']);
             }
 
-            if ($this->dashboardService->canUpdateDashboard($dashboard, $this->getUser())) {
+            if ($this->dashboardService->canUpdateDashboard($dashboard, $user)) {
                 $name = trim(strip_tags($this->requestStack->getCurrentRequest()->get('name')));
                 $dashboard->setName($name);
             }
@@ -347,21 +387,20 @@ class DashboardControllerService extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
      * @param int|null $id
      * @return Response
      * @throws UiException
      */
-    protected function actionShow(?int $id = null): Response
+    protected function actionShow(UserInterface $user, ?int $id = null): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id, $this->dashboardDefinition);
+        $dashboard = $this->dashboardService->getDashboard($user, $id, $this->dashboardDefinition);
         if ($dashboard === null) {
             throw new NotFoundHttpException('Unknown dashboard');
         }
         $id = $dashboard->getId();
 
-        $dashboards = $this->dashboardService->getUserDashboards($this->getUser());
+        $dashboards = $this->dashboardService->getUserDashboards($user);
 
         $manager = $this->dashboardShowFactory->create($this->dashboardDefinition, $dashboard, $dashboards);
 
@@ -372,6 +411,7 @@ class DashboardControllerService extends AbstractController
         $manager->setUrl('duplicate', $this->buildUrl('duplicate', $id));
         $manager->setUrl('configure', $this->buildUrl('configure', $id));
         $manager->setUrl('refresh_widget', $this->buildUrl('refresh_widget', $id));
+        $manager->setAcl($this->dashboardAcl);
         $manager->validate();
 
         return $this->render(
@@ -383,19 +423,18 @@ class DashboardControllerService extends AbstractController
     }
 
     /**
+     * @param UserInterface $user
      * @param int $id
      * @return Response
      * @throws PeriodException
-     * @throws WidgetException
      * @throws SourceException
+     * @throws WidgetException
      */
-    protected function actionRefreshWidget(int $id): Response
+    protected function actionRefreshWidget(UserInterface $user, int $id): Response
     {
         $identifier = $this->requestStack->getCurrentRequest()->get('identifier');
 
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        $dashboard = $this->dashboardService->getDashboard($this->getUser(), $id);
+        $dashboard = $this->dashboardService->getDashboard($user, $id);
         if ($dashboard === null) {
             throw new NotFoundHttpException('Unknown dashboard');
         }
@@ -458,5 +497,50 @@ class DashboardControllerService extends AbstractController
                 'id' => $id,
             ] + $parameters
         );
+    }
+
+    /**
+     * @param DashboardAcl|null $dashboardAcl
+     * @return void
+     */
+    private function setDashboardAcl(?DashboardAcl $dashboardAcl): void
+    {
+        if ($dashboardAcl === null) {
+            $dashboardAcl = new DashboardAcl();
+        }
+        $this->dashboardAcl = $dashboardAcl;
+    }
+
+    /**
+     * @param UserInterface $user
+     * @param int|null $id
+     * @return int|null
+     */
+    private function getDashboardAllowedId(UserInterface $user, ?int $id): ?int
+    {
+        if ($this->dashboardAcl->isCanSelect()) {
+            return $id;
+        }
+
+        return $this->dashboardService->getDashboard($user, null, $this->dashboardDefinition)->getId();
+    }
+
+    /**
+     * @return UserInterface|null
+     * @throws DashboardAclException
+     */
+    private function getDashboardUser(): UserInterface
+    {
+        $user = $this->getUser();
+        if ($user !== null) {
+            return $user;
+        }
+
+        $user = $this->dashboardAcl->getDefaultUser();
+        if ($user !== null) {
+            return $user;
+        }
+
+        throw new DashboardAclException('You must define a default user');
     }
 }

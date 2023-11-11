@@ -16,6 +16,7 @@ namespace Spipu\DashboardBundle\Service\Ui;
 use Exception;
 use Spipu\DashboardBundle\Entity\Dashboard\Dashboard;
 use Spipu\DashboardBundle\Entity\Dashboard\Screen;
+use Spipu\DashboardBundle\Entity\DashboardAcl;
 use Spipu\DashboardBundle\Entity\DashboardInterface;
 use Spipu\DashboardBundle\Entity\Widget\Widget;
 use Spipu\DashboardBundle\Exception\DashboardException;
@@ -44,6 +45,11 @@ class DashboardShowManager implements DashboardShowManagerInterface
      * @var DashboardRouter
      */
     private DashboardRouter $router;
+
+    /**
+     * @var DashboardAcl
+     */
+    private DashboardAcl $dashboardAcl;
 
     /**
      * @var PeriodService
@@ -127,6 +133,7 @@ class DashboardShowManager implements DashboardShowManagerInterface
         $this->dashboards = $dashboards;
         $this->request = $this->initDashboardRequest($requestStack);
         $this->widgetFactory = $widgetFactory;
+        $this->dashboardAcl = new DashboardAcl();
     }
 
     /**
@@ -241,6 +248,25 @@ class DashboardShowManager implements DashboardShowManagerInterface
         $this->router->setUrl($code, $url);
 
         return $this;
+    }
+
+    /**
+     * @param DashboardAcl $dashboardAcl
+     * @return $this
+     */
+    public function setAcl(DashboardAcl $dashboardAcl): self
+    {
+        $this->dashboardAcl = $dashboardAcl;
+
+        return $this;
+    }
+
+    /**
+     * @return DashboardAcl
+     */
+    public function getAcl(): DashboardAcl
+    {
+        return $this->dashboardAcl;
     }
 
     /**
