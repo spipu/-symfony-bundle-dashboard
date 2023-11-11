@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
 use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
