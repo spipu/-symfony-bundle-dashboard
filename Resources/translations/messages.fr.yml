@@ -89,6 +89,7 @@ spipu:
       value_single: "Valeur simple"
       value_compare: "Comparaison de valeurs"
       graph: "Graph"
+      specific: "Specifique"
 
     source:
       error:

@@ -45,9 +45,6 @@ class WidgetRequest extends AbstractRequest
         return $this->filters;
     }
 
-    /**
-     * @return void
-     */
     private function prepareFilters(): void
     {
         $this->getFiltersFromRequest();

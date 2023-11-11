@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle\Entity\Dashboard;
 
-use Spipu\DashboardBundle\Exception\WidgetException;
-
 class Dashboard
 {
     private string $code;
-
+    private string $route;
     private array $templates = [
         'show' => [
             'main'    => '@SpipuDashboard/main/dashboard-show.html.twig',
@@ -40,16 +38,11 @@ class Dashboard
         ],
     ];
 
-    private string $route;
-
     public function __construct(string $code)
     {
         $this->code = $code;
     }
 
-    /**
-     * @return string
-     */
     public function getCode(): string
     {
         return $this->code;

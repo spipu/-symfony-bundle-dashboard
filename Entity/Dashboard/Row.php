@@ -38,9 +38,6 @@ class Row
         return $this->screen;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
