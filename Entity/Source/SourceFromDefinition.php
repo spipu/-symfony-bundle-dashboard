@@ -17,8 +17,15 @@ use Spipu\DashboardBundle\Source\SourceDataDefinitionInterface;
 
 class SourceFromDefinition extends Source
 {
+    /**
+     * @var SourceDataDefinitionInterface
+     */
     private SourceDataDefinitionInterface $sourceDefinition;
 
+    /**
+     * @param string $code
+     * @param SourceDataDefinitionInterface $sourceDefinition
+     */
     public function __construct(
         string $code,
         SourceDataDefinitionInterface $sourceDefinition
@@ -34,6 +41,9 @@ class SourceFromDefinition extends Source
         ;
     }
 
+    /**
+     * @return SourceDataDefinitionInterface
+     */
     public function getSourceDefinition(): SourceDataDefinitionInterface
     {
         return $this->sourceDefinition;

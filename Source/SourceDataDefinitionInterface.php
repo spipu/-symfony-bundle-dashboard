@@ -17,11 +17,27 @@ use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 
 interface SourceDataDefinitionInterface
 {
+    /**
+     * @param WidgetRequest $request
+     * @return float
+     */
     public function getValue(WidgetRequest $request): float;
 
+    /**
+     * @param WidgetRequest $request
+     * @return float
+     */
     public function getPreviousValue(WidgetRequest $request): float;
 
+    /**
+     * @param WidgetRequest $request
+     * @return array
+     */
     public function getValues(WidgetRequest $request): array;
 
+    /**
+     * @param WidgetRequest $request
+     * @return array
+     */
     public function getSpecificValues(WidgetRequest $request): array;
 }

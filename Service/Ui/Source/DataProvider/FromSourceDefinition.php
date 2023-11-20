@@ -22,6 +22,11 @@ use Spipu\DashboardBundle\Exception\SourceException;
  */
 class FromSourceDefinition extends AbstractDataProvider
 {
+    /**
+     * @param Source $definition
+     * @return void
+     * @throws SourceException
+     */
     public function setSourceDefinition(Source $definition): void
     {
         if (!($definition instanceof SourceFromDefinition)) {
@@ -36,21 +41,33 @@ class FromSourceDefinition extends AbstractDataProvider
         parent::setSourceDefinition($definition);
     }
 
+    /**
+     * @return float
+     */
     public function getValue(): float
     {
         return $this->getDefinition()->getSourceDefinition()->getValue($this->getRequest());
     }
 
+    /**
+     * @return float
+     */
     public function getPreviousValue(): float
     {
         return $this->getDefinition()->getSourceDefinition()->getPreviousValue($this->getRequest());
     }
 
+    /**
+     * @return array
+     */
     public function getValues(): array
     {
         return $this->getDefinition()->getSourceDefinition()->getValues($this->getRequest());
     }
 
+    /**
+     * @return array
+     */
     public function getSpecificValues(): array
     {
         return $this->getDefinition()->getSourceDefinition()->getSpecificValues($this->getRequest());

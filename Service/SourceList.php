@@ -31,6 +31,7 @@ class SourceList
      * @var TranslatorInterface
      */
     private TranslatorInterface $translator;
+
     /**
      * @var SourceDefinitionInterface[]
      */
