@@ -16,6 +16,7 @@ namespace Spipu\DashboardBundle\Service;
 use Spipu\DashboardBundle\Entity\Source\SourceFilter;
 use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
+use Spipu\DashboardBundle\Source\SourceProxy;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -45,7 +46,7 @@ class SourceList
     private function addSource(SourceDefinitionInterface $source): void
     {
         if ($this->isUserGranted($source)) {
-            $this->sources[$source->getDefinition()->getCode()] = $source;
+            $this->sources[$source->getDefinition()->getCode()] = (new SourceProxy())->setSource($source);
         }
     }
 
