@@ -21,12 +21,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class PeriodService
 {
-    public const PERIOD_HOUR = 'hour';
+    public const PERIOD_HOUR        = 'hour';
     public const PERIOD_DAY_CURRENT = 'day-current';
-    public const PERIOD_DAY_FULL = 'day-full';
-    public const PERIOD_WEEK = 'week';
-    public const PERIOD_MONTH = 'month';
-    public const PERIOD_YEAR = 'year';
+    public const PERIOD_DAY_FULL    = 'day-full';
+    public const PERIOD_WEEK        = 'week';
+    public const PERIOD_MONTH       = 'month';
+    public const PERIOD_YEAR        = 'year';
+    public const PERIOD_CUSTOM      = 'custom';
 
     /**
      * @var string[]
@@ -92,25 +93,25 @@ class PeriodService
 
         try {
             switch ($type) {
-                case 'year':
+                case self::PERIOD_YEAR:
                     return $this->preparePeriodYear($period);
 
-                case 'month':
+                case self::PERIOD_MONTH:
                     return $this->preparePeriodMonth($period);
 
-                case 'week':
+                case self::PERIOD_WEEK:
                     return $this->preparePeriodWeek($period);
 
-                case 'day-full':
+                case self::PERIOD_DAY_FULL:
                     return $this->preparePeriodDayFull($period);
 
-                case 'day-current':
+                case self::PERIOD_DAY_CURRENT:
                     return $this->preparePeriodDayCurrent($period);
 
-                case 'hour':
+                case self::PERIOD_HOUR:
                     return $this->preparePeriodHour($period);
 
-                case 'custom':
+                case self::PERIOD_CUSTOM:
                     return $this->preparePeriodCustom($period, $dateFrom, $dateTo);
             }
         } catch (Exception $e) {
