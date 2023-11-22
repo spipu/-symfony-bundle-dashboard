@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
 use DateTimeInterface;
+use DateInterval;
 use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
+use Spipu\DashboardBundle\Service\PeriodService;
 use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 
 abstract class AbstractDataProvider implements DataProviderInterface
@@ -88,9 +90,15 @@ abstract class AbstractDataProvider implements DataProviderInterface
         $period = $this->request->getPeriod();
         $currentFrom = $period->getDateFrom();
         $currentTo = $period->getDateTo();
-        $dateFrom = (clone $currentFrom)->add($currentTo->diff($currentFrom));
-        $dateTo = $currentFrom;
 
+        if ($period->getType() === PeriodService::PERIOD_DAY_CURRENT) {
+            $dateFrom = (clone $currentFrom)->sub(new DateInterval('P1D'));
+            $dateTo   = (clone $dateFrom)->add($currentFrom->diff($currentTo));
+            return [$dateFrom, $dateTo];
+        }
+
+        $dateFrom = (clone $currentFrom)->add($currentTo->diff($currentFrom));
+        $dateTo   = (clone $currentFrom);
         return [$dateFrom, $dateTo];
     }
 
