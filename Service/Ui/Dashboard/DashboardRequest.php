@@ -68,10 +68,10 @@ class DashboardRequest extends AbstractRequest
                 return;
             }
 
-            $type = $requestPeriod['type'] !== '' ? $requestPeriod['type'] : 'custom';
+            $type = $requestPeriod['type'] !== '' ? $requestPeriod['type'] : PeriodService::PERIOD_CUSTOM;
             $dateFrom = $requestPeriod['from'] ?? null;
             $dateTo = $requestPeriod['to'] ?? null;
-            if ($type !== 'custom' || ($dateFrom && $dateTo)) {
+            if ($type !== PeriodService::PERIOD_CUSTOM || ($dateFrom && $dateTo)) {
                 $this->period = $this->periodService->create(
                     $type,
                     $dateFrom ? new DateTime($dateFrom) : null,

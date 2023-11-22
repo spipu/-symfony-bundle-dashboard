@@ -53,12 +53,13 @@ abstract class AbstractDataProvider implements DataProviderInterface
 
     protected function getPreviousPeriodDate(): array
     {
-        $currentFrom = $this->request->getPeriod()->getDateFrom();
-        $currentTo = $this->request->getPeriod()->getDateTo();
+        $period = $this->request->getPeriod();
+        $currentFrom = $period->getDateFrom();
+        $currentTo = $period->getDateTo();
         $dateFrom = (clone $currentFrom)->add($currentTo->diff($currentFrom));
         $dateTo = $currentFrom;
 
-        return array($dateFrom, $dateTo);
+        return [$dateFrom, $dateTo];
     }
 
     public function getSpecificValues(): array
