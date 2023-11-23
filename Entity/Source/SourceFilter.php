@@ -24,6 +24,14 @@ class SourceFilter
     private bool $multiple = false;
     private bool $translate;
 
+    /**
+     * @param string $code
+     * @param string $name
+     * @param string $entityField
+     * @param OptionsInterface $options
+     * @param bool $translate
+     * @SuppressWarnings(PMD.BooleanArgumentFlag)
+     */
     public function __construct(
         string $code,
         string $name,
