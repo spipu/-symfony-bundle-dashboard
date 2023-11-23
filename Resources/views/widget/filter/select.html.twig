@@ -13,6 +13,7 @@
             {% endif %}
             {% for value, text in filter.options.options %}
                 {% set selected = filter.isSelected(input_value, value) %}
+                {% if filter.isTranslate %}{% set text = text|trans %}{% endif %}
                 <option value="{{ value }}" {% if selected %}selected="selected"{% endif %}>{{ text }}</option>
             {% endfor %}
         </select>

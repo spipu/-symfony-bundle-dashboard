@@ -75,6 +75,7 @@ spipu:
       week: "comparé à la semaine précédente"
       month: "comparé au mois précédent"
       year: "comparé à l'année précédente"
+      custom: "comparé à la période précédente"
 
     period_title:
       hour: "de l'heure en cours"

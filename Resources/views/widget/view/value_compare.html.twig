@@ -9,7 +9,6 @@
     {% set icon = 'fa-arrow-down' %}
     {% set background =  lowerIsBetter ? 'bg-success':'bg-danger' %}
 {% endif %}
-
 <div class="widget-content value-compare-content card-body">
     <div class="d-flex align-items-center justify-content-center">
         <div class="value-actual text-primary font-weight-bold">
@@ -22,6 +21,6 @@
         </div>
     </div>
     <div class="d-flex align-items-center justify-content-center">
-        <div class="text-compare">{{ ('spipu.dashboard.compare.' ~ manager.definition.period.type)|trans }}</div>
+        <div class="text-compare">{{ ('spipu.dashboard.compare.' ~ manager.request.period.type)|trans }}</div>
     </div>
 </div>
