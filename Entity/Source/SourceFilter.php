@@ -22,17 +22,20 @@ class SourceFilter
     private string $entityField;
     private OptionsInterface $options;
     private bool $multiple = false;
+    private bool $translate;
 
     public function __construct(
         string $code,
         string $name,
         string $entityField,
-        OptionsInterface $options
+        OptionsInterface $options,
+        bool $translate = false
     ) {
         $this->code = $code;
         $this->name = $name;
         $this->entityField = $entityField;
         $this->options = $options;
+        $this->translate = $translate;
     }
 
     public function getCode(): string
@@ -53,6 +56,11 @@ class SourceFilter
     public function getOptions(): OptionsInterface
     {
         return $this->options;
+    }
+
+    public function isTranslate(): bool
+    {
+        return $this->translate;
     }
 
     public function isMultiple(): bool
