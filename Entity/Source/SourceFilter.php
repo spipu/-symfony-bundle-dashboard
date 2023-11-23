@@ -53,6 +53,7 @@ class SourceFilter
      * @param string $entityField
      * @param OptionsInterface $options
      * @param bool $translate
+     * @SuppressWarnings(PMD.BooleanArgumentFlag)
      */
     public function __construct(
         string $code,
