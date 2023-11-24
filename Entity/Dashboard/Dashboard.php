@@ -23,6 +23,11 @@ class Dashboard
     private string $code;
 
     /**
+     * @var string
+     */
+    private string $route;
+
+    /**
      * @var string[]
      */
     private array $templates = [
@@ -45,11 +50,6 @@ class Dashboard
             'all'     => '@SpipuDashboard/widget/all.html.twig',
         ],
     ];
-
-    /**
-     * @var string
-     */
-    private string $route;
 
     /**
      * @param string $code
