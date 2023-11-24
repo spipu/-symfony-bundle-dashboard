@@ -22,6 +22,7 @@ use Spipu\DashboardBundle\Exception\PeriodException;
 use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Exception\TypeException;
 use Spipu\DashboardBundle\Exception\WidgetException;
+use Spipu\DashboardBundle\Service\Ui\DashboardRequestFactory;
 use Spipu\DashboardBundle\Service\Ui\DashboardShowFactory;
 use Spipu\DashboardBundle\Service\Ui\Definition\DashboardDefinitionInterface;
 use Spipu\DashboardBundle\Service\Ui\WidgetFactory;
@@ -110,6 +111,11 @@ class DashboardControllerService extends AbstractController
     private DashboardAcl $dashboardAcl;
 
     /**
+     * @var DashboardRequestFactory
+     */
+    private DashboardRequestFactory $dashboardRequestFactory;
+
+    /**
      * @param TranslatorInterface $translator
      * @param DashboardService $dashboardService
      * @param WidgetService $widgetService
@@ -121,6 +127,7 @@ class DashboardControllerService extends AbstractController
      * @param DashboardConfiguratorService $dashboardConfiguratorService
      * @param DashboardShowFactory $dashboardShowFactory
      * @param WidgetFactory $widgetFactory
+     * @param DashboardRequestFactory $dashboardRequestFactory
      */
     public function __construct(
         TranslatorInterface $translator,
@@ -133,7 +140,8 @@ class DashboardControllerService extends AbstractController
         EntityManagerInterface $entityManager,
         DashboardConfiguratorService $dashboardConfiguratorService,
         DashboardShowFactory $dashboardShowFactory,
-        WidgetFactory $widgetFactory
+        WidgetFactory $widgetFactory,
+        DashboardRequestFactory $dashboardRequestFactory
     ) {
         $this->dashboardService = $dashboardService;
         $this->translator = $translator;
@@ -146,6 +154,7 @@ class DashboardControllerService extends AbstractController
         $this->dashboardConfiguratorService = $dashboardConfiguratorService;
         $this->dashboardShowFactory = $dashboardShowFactory;
         $this->widgetFactory = $widgetFactory;
+        $this->dashboardRequestFactory = $dashboardRequestFactory;
     }
 
     /**
@@ -445,19 +454,21 @@ class DashboardControllerService extends AbstractController
         $widgetDefinition = $this->dashboardService->getWidgetDefinition($dashboard, $identifier);
         $widget = $this->widgetService->buildWidget($widgetDefinition);
         try {
-            $manager = $this->widgetFactory->create($widget);
-            $manager->setUrl(
+            $widgetManager = $this->widgetFactory->create($widget);
+            $widgetManager->setUrl(
                 'refresh',
                 $this->buildUrl('refresh_widget', $dashboard->getId(), ['identifier' => $identifier])
             );
-            $manager->validate();
+            $dashboardRequest = $this->dashboardRequestFactory->get($dashboard);
+            $widgetManager->getRequest()->setPeriod($dashboardRequest->getPeriod());
+            $widgetManager->validate();
         } catch (Exception $exception) {
-            $manager = $this->widgetFactory->createError($exception->getMessage(), $widget);
+            $widgetManager = $this->widgetFactory->createError($exception->getMessage(), $widget);
         }
 
         return $this->render(
             $this->dashboardDefinition->getDefinition()->getTemplateWidgetAll(),
-            ['manager' => $manager]
+            ['manager' => $widgetManager]
         );
     }
 

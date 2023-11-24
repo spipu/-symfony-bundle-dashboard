@@ -35,9 +35,9 @@ class DashboardRequest
     private PeriodService $periodService;
 
     /**
-     * @var DashboardConfig
+     * @var int
      */
-    private DashboardConfig $definition;
+    private int $dashboardId;
 
     /**
      * @var string
@@ -52,16 +52,16 @@ class DashboardRequest
     /**
      * @param SymfonyRequest $request
      * @param PeriodService $periodService
-     * @param DashboardConfig $definition
+     * @param int $dashboardId
      */
     public function __construct(
         SymfonyRequest $request,
         PeriodService $periodService,
-        DashboardConfig $definition
+        int $dashboardId
     ) {
         $this->request = $request;
         $this->periodService = $periodService;
-        $this->definition = $definition;
+        $this->dashboardId = $dashboardId;
     }
 
     /**
@@ -69,7 +69,7 @@ class DashboardRequest
      */
     public function prepare()
     {
-        $this->setSessionPrefixKey('dashboard.' . $this->definition->getId());
+        $this->setSessionPrefixKey('dashboard.' . $this->dashboardId);
         $this->preparePeriod();
     }
 
