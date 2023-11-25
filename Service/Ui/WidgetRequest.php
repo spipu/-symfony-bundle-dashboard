@@ -62,12 +62,10 @@ class WidgetRequest extends AbstractRequest
      */
     private function prepareFilters(): void
     {
-        $this->filters = [];
+        $this->filters = $this->definition->getFilters();
         $this->filters = $this->getSessionValue('filters', $this->filters);
         $this->filters = (array)$this->request->get(self::KEY_FILTERS, $this->filters);
-        if ($this->request->get(self::KEY_FILTERS) === null) {
-            $this->filters = $this->definition->getFilters();
-        }
+
         foreach ($this->filters as $key => $value) {
             $filter = $this->definition->getSource()->getFilter($key);
             if (!$filter) {
