@@ -20,14 +20,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class DashboardRequestFactory
 {
-    /**
-     * @var PeriodService
-     */
     private PeriodService $periodService;
-
-    /**
-     * @var RequestStack
-     */
     private RequestStack $requestStack;
 
     /**
@@ -35,10 +28,6 @@ class DashboardRequestFactory
      */
     private array $dashboardRequests = [];
 
-    /**
-     * @param PeriodService $periodService
-     * @param RequestStack $requestStack
-     */
     public function __construct(
         PeriodService $periodService,
         RequestStack $requestStack
@@ -47,17 +36,13 @@ class DashboardRequestFactory
         $this->requestStack = $requestStack;
     }
 
-    /**
-     * @param DashboardInterface $resource
-     * @return DashboardRequest
-     */
     public function get(DashboardInterface $resource): DashboardRequest
     {
         $dashboardId = $resource->getId();
 
         if (!array_key_exists($dashboardId, $this->dashboardRequests)) {
             $request = new DashboardRequest(
-                $this->requestStack->getCurrentRequest(),
+                $this->requestStack,
                 $this->periodService,
                 $dashboardId
             );
