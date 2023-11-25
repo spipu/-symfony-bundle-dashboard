@@ -15,26 +15,17 @@ namespace Spipu\DashboardBundle\Service\Ui\Widget;
 
 use Spipu\DashboardBundle\Entity\Period;
 use Spipu\DashboardBundle\Entity\Widget\Widget;
+use Spipu\DashboardBundle\Service\Ui\AbstractRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class WidgetRequest
+class WidgetRequest extends AbstractRequest
 {
     public const KEY_FILTERS = 'fl';
-
-    /**
-     * @var SymfonyRequest
-     */
-    private SymfonyRequest $request;
 
     /**
      * @var Widget
      */
     private Widget $definition;
-
-    /**
-     * @var string
-     */
-    private string $sessionPrefixKey;
 
     /**
      * @var Period|null
@@ -53,14 +44,14 @@ class WidgetRequest
         SymfonyRequest $request,
         Widget $definition
     ) {
-        $this->request = $request;
+        parent::__construct($request);
         $this->definition = $definition;
     }
 
     /**
      * @return void
      */
-    public function prepare()
+    public function prepare(): void
     {
         $this->setSessionPrefixKey('widget.' . $this->definition->getId());
         $this->prepareFilters();
@@ -105,35 +96,6 @@ class WidgetRequest
         }
 
         $this->setSessionValue('filters', $this->filters);
-    }
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    private function getSessionKey(string $key): string
-    {
-        return $this->sessionPrefixKey . '.' . $key;
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public function getSessionValue(string $key, $default)
-    {
-        return $this->request->getSession()->get($this->getSessionKey($key), $default);
-    }
-
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
-    private function setSessionValue(string $key, $value): void
-    {
-        $this->request->getSession()->set($this->getSessionKey($key), $value);
     }
 
     /**
@@ -218,14 +180,5 @@ class WidgetRequest
         $this->period = $period;
 
         return $this;
-    }
-
-    /**
-     * @param string $sessionPrefixKey
-     * @return void
-     */
-    private function setSessionPrefixKey(string $sessionPrefixKey): void
-    {
-        $this->sessionPrefixKey = $sessionPrefixKey;
     }
 }
