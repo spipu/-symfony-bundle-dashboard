@@ -11,12 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Spipu\DashboardBundle\Service\Ui\Dashboard;
+namespace Spipu\DashboardBundle\Service\Ui;
 
 use DateTime;
 use Spipu\DashboardBundle\Entity\Period;
 use Spipu\DashboardBundle\Service\PeriodService;
-use Spipu\DashboardBundle\Service\Ui\AbstractRequest;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Throwable;
 

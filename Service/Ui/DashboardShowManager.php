@@ -22,7 +22,6 @@ use Spipu\DashboardBundle\Entity\Widget\Widget;
 use Spipu\DashboardBundle\Exception\DashboardException;
 use Spipu\DashboardBundle\Service\DashboardViewerService;
 use Spipu\DashboardBundle\Service\PeriodService;
-use Spipu\DashboardBundle\Service\Ui\Dashboard\DashboardRequest;
 use Spipu\DashboardBundle\Service\Ui\Definition\DashboardDefinitionInterface;
 use Twig\Environment as Twig;
 

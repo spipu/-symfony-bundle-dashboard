@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle\Source;
 
-use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
+use Spipu\DashboardBundle\Service\Ui\WidgetRequest;
 
 interface SourceDataDefinitionInterface
 {

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service\Ui\Source\DataProvider;
 
 use DateInterval;
+use DateTimeInterface;
 use Spipu\DashboardBundle\Entity\Source\Source as SourceDefinition;
 use Spipu\DashboardBundle\Service\PeriodService;
-use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
+use Spipu\DashboardBundle\Service\Ui\WidgetRequest;
 
 abstract class AbstractDataProvider implements DataProviderInterface
 {
