@@ -18,7 +18,6 @@ use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Exception\TypeException;
 use Spipu\DashboardBundle\Exception\WidgetException;
 use Spipu\DashboardBundle\Service\Ui\Source\DataProvider\DataProviderInterface;
-use Spipu\DashboardBundle\Service\Ui\Widget\WidgetRequest;
 use Spipu\DashboardBundle\Service\WidgetTypeService;
 use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;

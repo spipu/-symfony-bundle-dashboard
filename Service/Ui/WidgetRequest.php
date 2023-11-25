@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Spipu\DashboardBundle\Service\Ui\Widget;
+namespace Spipu\DashboardBundle\Service\Ui;
 
 use Spipu\DashboardBundle\Entity\Period;
 use Spipu\DashboardBundle\Entity\Widget\Widget;
-use Spipu\DashboardBundle\Service\Ui\AbstractRequest;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class WidgetRequest extends AbstractRequest

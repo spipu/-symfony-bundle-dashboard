@@ -15,7 +15,6 @@ namespace Spipu\DashboardBundle\Service\Ui;
 
 use Spipu\DashboardBundle\Entity\DashboardInterface;
 use Spipu\DashboardBundle\Service\PeriodService;
-use Spipu\DashboardBundle\Service\Ui\Dashboard\DashboardRequest;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class DashboardRequestFactory
