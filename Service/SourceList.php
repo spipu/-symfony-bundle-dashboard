@@ -157,11 +157,20 @@ class SourceList
         }
 
         return array_map(
-            fn(SourceFilter $filter) => [
-                'name' => $this->translator->trans($filter->getName()),
-                'options' => $filter->getOptions()->getOptions(),
-                'multiple' => $filter->isMultiple(),
-            ],
+            function (SourceFilter $filter): array {
+                $values = $filter->getOptions()->getOptions();
+                if ($filter->isTranslate()) {
+                    foreach ($values as $key => $value) {
+                        $values[$key] = $this->translator->trans($value);
+                    }
+                }
+
+                return [
+                    'name'      => $this->translator->trans($filter->getName()),
+                    'options'   => $values,
+                    'multiple'  => $filter->isMultiple(),
+                ];
+            },
             $source->getDefinition()->getFilters()
         );
     }
