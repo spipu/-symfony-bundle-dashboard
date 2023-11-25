@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Spipu\DashboardBundle\Service\Ui\Dashboard;
 
 use DateTime;
-use Spipu\DashboardBundle\Entity\DashboardConfig;
 use Spipu\DashboardBundle\Entity\Period;
 use Spipu\DashboardBundle\Service\PeriodService;
 use Spipu\DashboardBundle\Service\Ui\AbstractRequest;
@@ -26,22 +25,22 @@ class DashboardRequest extends AbstractRequest
     public const KEY_PERIOD = 'dp';
 
     private PeriodService $periodService;
-    private DashboardConfig $definition;
+    private int $dashboardId;
     private ?Period $period = null;
 
     public function __construct(
         RequestStack $requestStack,
         PeriodService $periodService,
-        DashboardConfig $definition
+        int $dashboardId
     ) {
         parent::__construct($requestStack);
         $this->periodService = $periodService;
-        $this->definition = $definition;
+        $this->dashboardId = $dashboardId;
     }
 
     public function prepare(): void
     {
-        $this->setSessionPrefixKey('dashboard.' . $this->definition->getId());
+        $this->setSessionPrefixKey('dashboard.' . $this->dashboardId);
         $this->preparePeriod();
     }
 

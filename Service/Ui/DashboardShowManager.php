@@ -24,7 +24,6 @@ use Spipu\DashboardBundle\Service\DashboardViewerService;
 use Spipu\DashboardBundle\Service\PeriodService;
 use Spipu\DashboardBundle\Service\Ui\Dashboard\DashboardRequest;
 use Spipu\DashboardBundle\Service\Ui\Definition\DashboardDefinitionInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment as Twig;
 
 /**
@@ -53,11 +52,11 @@ class DashboardShowManager implements DashboardShowManagerInterface
 
     /**
      * @param Twig $twig
-     * @param RequestStack $requestStack
      * @param DashboardRouter $router
      * @param PeriodService $periodService
      * @param DashboardViewerService $viewerService
      * @param WidgetFactory $widgetFactory
+     * @param DashboardRequestFactory $dashboardRequestFactory
      * @param DashboardDefinitionInterface $definition
      * @param DashboardInterface $resource
      * @param DashboardInterface[] $dashboards
@@ -65,11 +64,11 @@ class DashboardShowManager implements DashboardShowManagerInterface
      */
     public function __construct(
         Twig $twig,
-        RequestStack $requestStack,
         DashboardRouter $router,
         PeriodService $periodService,
         DashboardViewerService $viewerService,
         WidgetFactory $widgetFactory,
+        DashboardRequestFactory $dashboardRequestFactory,
         DashboardDefinitionInterface $definition,
         DashboardInterface $resource,
         array $dashboards
@@ -81,18 +80,9 @@ class DashboardShowManager implements DashboardShowManagerInterface
         $this->definition = $definition;
         $this->resource = $resource;
         $this->dashboards = $dashboards;
+        $this->request = $dashboardRequestFactory->get($this->resource);
         $this->widgetFactory = $widgetFactory;
-        $this->request = $this->initDashboardRequest($requestStack);
         $this->dashboardAcl = new DashboardAcl();
-    }
-
-    private function initDashboardRequest(
-        RequestStack $requestStack
-    ): DashboardRequest {
-        $request = new DashboardRequest($requestStack, $this->periodService, $this->resource);
-        $request->prepare();
-
-        return $request;
     }
 
     public function validate(): bool
