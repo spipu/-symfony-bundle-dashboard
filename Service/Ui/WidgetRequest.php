@@ -46,7 +46,9 @@ class WidgetRequest extends AbstractRequest
 
     private function prepareFilters(): void
     {
-        $this->getFiltersFromRequest();
+        $this->filters = $this->definition->getFilters();
+        $this->filters = $this->getSessionValue('filters', $this->filters);
+        $this->filters = (array)$this->request->get(self::KEY_FILTERS, $this->filters);
 
         foreach ($this->filters as $key => $value) {
             $filter = $this->definition->getSource()->getFilter($key);
@@ -75,16 +77,6 @@ class WidgetRequest extends AbstractRequest
         }
 
         $this->setSessionValue('filters', $this->filters);
-    }
-
-    private function getFiltersFromRequest(): void
-    {
-        $this->filters = [];
-        $this->filters = $this->getSessionValue('filters', $this->filters);
-        $this->filters = (array)$this->getCurrentRequest()->get(self::KEY_FILTERS, $this->filters);
-        if ($this->getCurrentRequest()->get(self::KEY_FILTERS) === null) {
-            $this->filters = $this->definition->getFilters();
-        }
     }
 
     public function getFilterValueString(string $key, string $subKey = null): string
