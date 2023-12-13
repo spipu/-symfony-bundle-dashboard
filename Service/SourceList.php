@@ -17,7 +17,7 @@ use Spipu\DashboardBundle\Entity\Source\SourceFilter;
 use Spipu\DashboardBundle\Exception\SourceException;
 use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
 use Spipu\DashboardBundle\Source\SourceProxy;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SourceList
