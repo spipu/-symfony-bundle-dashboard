@@ -1,8 +1,8 @@
 services:
     # Generic Declaration
     Spipu\DashboardBundle\:
-        resource:      '../../*'
-        exclude:       '../../{DependencyInjection,Entity,Tests,SpipuDashboardBundle.php}'
+        resource:      '../src/*'
+        exclude:       '../src/{Entity,SpipuDashboardBundle.php}'
         autowire:      true
         autoconfigure: true
 
@@ -12,7 +12,7 @@ services:
             $sources: !tagged_iterator 'spipu.widget.source'
 
     Spipu\DashboardBundle\Service\Ui\Source\DataProvider\:
-        resource:      '../../Service/Ui/Source/DataProvider/*'
+        resource:      '../src/Service/Ui/Source/DataProvider/*'
         autowire:      true
         public:        true
 

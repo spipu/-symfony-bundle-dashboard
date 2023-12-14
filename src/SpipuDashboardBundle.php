@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Spipu\DashboardBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Spipu\CoreBundle\AbstractBundle;
 
-class SpipuDashboardBundle extends Bundle
+class SpipuDashboardBundle extends AbstractBundle
 {
 }
