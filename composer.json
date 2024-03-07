@@ -16,7 +16,7 @@
     "require": {
         "php": "^8.1",
         "ext-pdo": "*",
-        "doctrine/orm-bundle": "^3.0",
+        "doctrine/orm": "^3.0",
         "symfony/framework-bundle": "^6.4",
         "spipu/ui-bundle": "^4.0"
     },
