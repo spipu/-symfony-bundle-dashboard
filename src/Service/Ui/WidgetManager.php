@@ -153,11 +153,37 @@ class WidgetManager implements WidgetManagerInterface
             ]
         );
 
-        return $this->translator->trans(
+        $params = [];
+        foreach ($this->getDefinition()->getSource()->getFilters() as $filter) {
+            $filterValues = $this->getFilterValues($filter->getCode());
+            foreach ($filterValues as $key => $value) {
+                $value = $filter->getOptions()->getValueFromKey($value) ?? $value;
+                if ($filter->isTranslate()) {
+                    $value = $this->translator->trans($value);
+                }
+                $filterValues[$key] = $value;
+            }
+            $params['%filter.' . $filter->getCode()] = implode(',', $filterValues);
+        }
+        $params['%period'] = $periodLabel;
+
+        $label = $this->translator->trans(
             sprintf('spipu.dashboard.source.%s.title', $this->getDefinition()->getSource()->getCode()),
-            [
-                '%period' => $periodLabel
-            ]
+            $params
         );
+
+        return trim($label);
+    }
+
+    private function getFilterValues(string $code): array
+    {
+        $filterValues = $this->getRequest()->getFilters()[$code] ?? $this->getDefinition()->getFilters()[$code] ?? [];
+
+        if (!is_array($filterValues)) {
+            $filterValues = [$filterValues];
+        }
+
+
+        return $filterValues;
     }
 }

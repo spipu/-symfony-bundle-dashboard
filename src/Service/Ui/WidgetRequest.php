@@ -86,14 +86,18 @@ class WidgetRequest extends AbstractRequest
         }
 
         if ($subKey === null) {
-            return $this->filters[$key];
+            $value = $this->filters[$key];
+            if (is_array($value)) {
+                return '';
+            }
+            return $value;
         }
 
         if (!is_array($this->filters[$key])) {
             return '';
         }
 
-        if (!array_key_exists($subKey, $this->filters[$key])) {
+        if (!array_key_exists($subKey, $this->filters[$key]) || !is_string($this->filters[$key][$subKey])) {
             return '';
         }
 
@@ -107,14 +111,18 @@ class WidgetRequest extends AbstractRequest
         }
 
         if ($subKey === null) {
-            return $this->filters[$key];
+            $value = $this->filters[$key];
+            if (is_array($value)) {
+                return [];
+            }
+            return $value;
         }
 
         if (!is_array($this->filters[$key])) {
             return [];
         }
 
-        if (!array_key_exists($subKey, $this->filters[$key])) {
+        if (!array_key_exists($subKey, $this->filters[$key]) || !is_array($this->filters[$key][$subKey])) {
             return [];
         }
 
