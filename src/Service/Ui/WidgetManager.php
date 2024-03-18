@@ -21,6 +21,7 @@ use Spipu\DashboardBundle\Service\WidgetTypeService;
 use Spipu\DashboardBundle\Source\SourceDefinitionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as Twig;
 
 /**
@@ -31,9 +32,10 @@ class WidgetManager implements WidgetManagerInterface
     private ContainerInterface $container;
     private Twig $twig;
     private WidgetRequest $request;
+    private WidgetTypeService $widgetTypeService;
+    private TranslatorInterface $translator;
     private Widget $definition;
     private DataProviderInterface $dataProvider;
-    private WidgetTypeService $widgetTypeService;
 
     private array $urls = [
         'refresh' => '',
@@ -44,12 +46,14 @@ class WidgetManager implements WidgetManagerInterface
         RequestStack $requestStack,
         Twig $twig,
         WidgetTypeService $widgetTypeService,
+        TranslatorInterface $translator,
         Widget $widget
     ) {
         $this->container = $container;
         $this->twig = $twig;
-        $this->definition = $widget;
         $this->widgetTypeService = $widgetTypeService;
+        $this->translator = $translator;
+        $this->definition = $widget;
 
         if ($this->definition->getSource()) {
             $this->request = $this->initWidgetRequest($requestStack);
@@ -137,5 +141,23 @@ class WidgetManager implements WidgetManagerInterface
         $nbDecimals = ($this->definition->getSource()->getType() === SourceDefinitionInterface::TYPE_FLOAT ? 2 : 0);
 
         return number_format((float) $value, $nbDecimals, '.', ' ');
+    }
+
+    public function getWidgetTitle(): string
+    {
+        $periodLabel = $this->translator->trans(
+            sprintf('spipu.dashboard.period_title.%s', $this->getRequest()->getPeriod()->getType()),
+            [
+                '%from' => $this->getRequest()->getPeriod()->getDateFrom()->format('Y-m-d H:i'),
+                '%to'   => $this->getRequest()->getPeriod()->getDateTo()->format('Y-m-d H:i'),
+            ]
+        );
+
+        return $this->translator->trans(
+            sprintf('spipu.dashboard.source.%s.title', $this->getDefinition()->getSource()->getCode()),
+            [
+                '%period' => $periodLabel
+            ]
+        );
     }
 }

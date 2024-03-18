@@ -17,6 +17,7 @@ use Spipu\DashboardBundle\Entity\Widget\Widget;
 use Spipu\DashboardBundle\Service\WidgetTypeService;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment as Twig;
 
 class WidgetFactory
@@ -25,17 +26,20 @@ class WidgetFactory
     private RequestStack $requestStack;
     private Twig $twig;
     private WidgetTypeService $widgetTypeService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         ContainerInterface $container,
         RequestStack $requestStack,
         Twig $twig,
-        WidgetTypeService $widgetTypeService
+        WidgetTypeService $widgetTypeService,
+        TranslatorInterface $translator
     ) {
         $this->container = $container;
         $this->requestStack = $requestStack;
         $this->twig = $twig;
         $this->widgetTypeService = $widgetTypeService;
+        $this->translator = $translator;
     }
 
     public function create(
@@ -46,6 +50,7 @@ class WidgetFactory
             $this->requestStack,
             $this->twig,
             $this->widgetTypeService,
+            $this->translator,
             $widget
         );
     }
@@ -61,6 +66,7 @@ class WidgetFactory
             $this->requestStack,
             $this->twig,
             $this->widgetTypeService,
+            $this->translator,
             $widget
         );
     }
