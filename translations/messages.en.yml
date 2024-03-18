@@ -13,6 +13,7 @@ spipu:
       source: "Source"
       type: "Type"
       period: "Period"
+      all: "All"
       confirm_delete_row: "Do you really want to delete this row?"
       confirm_clone_row: "Do you really want to clone this row?"
       confirm_delete_widget: "Do you really want to delete this widget?"

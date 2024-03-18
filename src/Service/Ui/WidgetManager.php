@@ -163,7 +163,11 @@ class WidgetManager implements WidgetManagerInterface
                 }
                 $filterValues[$key] = $value;
             }
-            $params['%filter.' . $filter->getCode()] = implode(',', $filterValues);
+            $filterValues = implode(',', $filterValues);
+            if ($filterValues === '') {
+                $filterValues = $this->translator->trans('spipu.dashboard.label.all');
+            }
+            $params['%filter.' . $filter->getCode()] = $filterValues;
         }
         $params['%period'] = $periodLabel;
 
