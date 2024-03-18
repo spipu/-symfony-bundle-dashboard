@@ -87,7 +87,7 @@ class WidgetRequest extends AbstractRequest
 
         if ($subKey === null) {
             $value = $this->filters[$key];
-            if (is_array($value)) {
+            if (!is_string($value)) {
                 return '';
             }
             return $value;
@@ -112,7 +112,7 @@ class WidgetRequest extends AbstractRequest
 
         if ($subKey === null) {
             $value = $this->filters[$key];
-            if (is_array($value)) {
+            if (!is_array($value)) {
                 return [];
             }
             return $value;
