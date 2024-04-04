@@ -218,6 +218,6 @@ abstract class Source
 
     public function needPeriod(): bool
     {
-        return (!$this->hasSpecificDisplay()) && ($this->getDateField() !== null);
+        return ($this->getDateField() !== null);
     }
 }
