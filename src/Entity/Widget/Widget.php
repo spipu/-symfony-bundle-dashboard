@@ -194,6 +194,6 @@ class Widget
 
     public function isTooSlow(): bool
     {
-        return ($this->generationTime > 150000);
+        return ($this->generationTime > 200000);
     }
 }
