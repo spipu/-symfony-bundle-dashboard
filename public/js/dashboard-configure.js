@@ -1101,8 +1101,11 @@ class DashboardConfigure {
             return null;
         }
 
-        let config = this.dashboardContent.rows[rowKey].cols[colId].widgets[widgetId];
-        if (config === undefined) {
+        let config = null;
+
+        try {
+            config = this.dashboardContent.rows[rowKey].cols[colId].widgets[widgetId];
+        } catch (e) {
             return null;
         }
 
