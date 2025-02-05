@@ -1109,7 +1109,7 @@ class DashboardConfigure {
             return null;
         }
 
-        return config;
+        return config === undefined ? null : config;
     }
 
     widgetSetConfig(rowId, colId, widgetId, config)
